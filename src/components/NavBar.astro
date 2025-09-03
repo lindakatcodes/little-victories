@@ -1,0 +1,30 @@
+---
+import Button from "./Button.astro";
+---
+
+<nav>
+  <a href="/" class="home">Little Victories</a>
+  <Button text="Sign In" inverseColor />
+</nav>
+
+<style>
+  nav {
+    background-color: var(--dark-blue);
+    color: var(--ivory);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.5rem 1rem;
+  }
+
+  a {
+    color: var(--ivory);
+    text-underline-offset: 0.25rem;
+  }
+
+  .home {
+    font-weight: 600;
+    font-size: var(--txt-lg);
+    text-decoration: none;
+  }
+</style>

@@ -1,18 +1,23 @@
 ---
 interface Props {
   text: String;
+  inverseColor?: Boolean;
 }
 
-const { text } = Astro.props;
+const { text, inverseColor = false } = Astro.props;
+
+const bgColor = !inverseColor ? "var(--dark-blue)" : "var(--light-blue)";
+const txtColor = !inverseColor ? "var(--ivory)" : "var(--dark-blue)";
 ---
 
 <button>{text}</button>
 
-<style>
+<style define:vars={{ bgColor, txtColor }}>
   button {
     padding: 0.5rem 0.75rem;
-    background-color: var(--dark-blue);
-    color: var(--ivory);
+    background-color: var(--bgColor);
+    color: var(--txtColor);
     border-radius: 0.25rem;
+    font-weight: 500;
   }
 </style>

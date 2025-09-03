@@ -1,5 +1,6 @@
 ---
 // Supports weights 200-800
+import NavBar from "@components/NavBar.astro";
 import "@fontsource-variable/plus-jakarta-sans";
 import "@styles/global.css";
 ---
@@ -14,15 +15,18 @@ import "@styles/global.css";
     <title>Little Victories</title>
   </head>
   <body>
-    <slot />
+    <main>
+      <NavBar />
+      <slot />
+    </main>
   </body>
 </html>
 
 <style>
   html,
   body {
-    width: 100%;
-    height: 100%;
+    inline-size: 100%;
+    block-size: 100%;
   }
 
   body {
