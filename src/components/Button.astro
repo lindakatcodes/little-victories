@@ -1,0 +1,18 @@
+---
+interface Props {
+  text: String;
+}
+
+const { text } = Astro.props;
+---
+
+<button>{text}</button>
+
+<style>
+  button {
+    padding: 0.5rem 0.75rem;
+    background-color: var(--dark-blue);
+    color: var(--ivory);
+    border-radius: 0.25rem;
+  }
+</style>
