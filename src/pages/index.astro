@@ -4,38 +4,65 @@ import MainLayout from "@layouts/MainLayout.astro";
 ---
 
 <MainLayout>
-  <h1>Little Victories</h1>
+  <section>
+    <h1>Little Victories</h1>
 
-  <p>
-    Job searching is a grind, and it's easy to burn out when you can't see
-    progress. So I'm turning it into a game!
-  </p>
+    <p>
+      Job searching is a grind, and it's easy to burn out when you can't see
+      progress. So I'm turning it into a game!
+    </p>
 
-  <p>
-    Complete 15 actionable tasks each week (that's 3 tasks a day) to travel the
-    path of landing a job and unlocking a prize. Each step of the path lets you
-    select from a randomized list of tasks, so there's always one you can do.
-  </p>
+    <p>
+      Complete 15 actionable tasks each week (that's 3 tasks a day) to travel
+      the path of landing a job and unlocking a prize. Each step of the path
+      lets you select from a randomized list of tasks, so there's always one you
+      can do.
+    </p>
 
-  <p>
-    Your progress stays until you complete 15 tasks, so your actions aren't
-    wasted when you have a hard week (and can be increased if you're having a
-    good week). Your prizes are saved to your profile so you can visualize your
-    progress.
-  </p>
+    <p>
+      Your progress stays until you complete 15 tasks, so your actions aren't
+      wasted when you have a hard week (and can be increased if you're having a
+      good week). Your prizes are saved to your profile so you can visualize
+      your progress.
+    </p>
 
-  <p class="bump">All forward movement matters.</p>
+    <p class="bump">All forward movement counts.</p>
 
-  <div class="cta">
-    <p>Ready to try it out?</p>
-    <Button text="Create a Profile" />
-  </div>
+    <div class="cta">
+      <p>Ready to try it out?</p>
+      <Button text="Create a Profile" />
+    </div>
+  </section>
 </MainLayout>
 
 <style>
+  section {
+    max-inline-size: 95cqw;
+    margin: 0 auto;
+
+    @media (width >= 64rem) {
+      & {
+        max-inline-size: 70cqw;
+      }
+    }
+
+    @media (width >= 80rem) {
+      & {
+        max-inline-size: 60cqw;
+      }
+    }
+
+    @media (width >= 96rem) {
+      & {
+        max-inline-size: 50cqw;
+      }
+    }
+  }
+
   h1 {
     text-align: center;
-    margin-bottom: 1rem;
+    margin: 1rem auto;
+    font-weight: 800;
   }
 
   p {

@@ -15,8 +15,8 @@ import "@styles/global.css";
     <title>Little Victories</title>
   </head>
   <body>
+    <NavBar />
     <main>
-      <NavBar />
       <slot />
     </main>
   </body>
@@ -33,5 +33,12 @@ import "@styles/global.css";
     font-family: "Plus Jakarta Sans Variable", sans-serif;
     background: var(--light-blue, #bfdbf7);
     color: var(--dark-blue, #071f36);
+    display: grid;
+    grid-template-rows: max-content 1fr;
+  }
+
+  main {
+    container: main / inline-size;
+    inline-size: 100%;
   }
 </style>

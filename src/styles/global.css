@@ -1,5 +1,13 @@
 @import "reset.css";
 
+/*
+borrowing Tailwind's breakpoints:
+48rem (768px)	  @media (width >= 48rem) { ... }
+64rem (1024px)  @media (width >= 64rem) { ... }
+80rem (1280px)  @media (width >= 80rem) { ... }
+96rem (1536px)  @media (width >= 96rem) { ... }
+*/
+
 :root {
   --light-blue: hsl(210 77.8% 85.9%); /* #BFDBF7 */
   --dark-blue: hsl(209 77% 12%); /* #071F36 */

@@ -7,7 +7,7 @@ interface Props {
 const { text, inverseColor = false } = Astro.props;
 
 const bgColor = !inverseColor ? "var(--dark-blue)" : "var(--light-blue)";
-const txtColor = !inverseColor ? "var(--ivory)" : "var(--dark-blue)";
+const txtColor = !inverseColor ? "var(--light-blue)" : "var(--dark-blue)";
 ---
 
 <button>{text}</button>
