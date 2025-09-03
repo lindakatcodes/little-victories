@@ -1,0 +1,43 @@
+@import "reset.css";
+
+:root {
+  --light-blue: hsl(210 77.8% 85.9%); /* #BFDBF7 */
+  --dark-blue: hsl(209 77% 12%); /* #071F36 */
+  --ivory: hsl(73 52.9% 96.7%); /* #F9FBF2 */
+  --txt-sm: 0.875rem;
+  --txt: 1rem;
+  --txt-lg: 1.2rem;
+  --txt-5: 1.44rem;
+  --txt-4: 1.73rem;
+  --txt-3: 2.07rem;
+  --txt-2: 2.49rem;
+  --txt-1: 2.99rem;
+}
+
+p {
+  font-size: var(--txt);
+}
+
+h6 {
+  font-size: var(--txt-lg);
+}
+
+h5 {
+  font-size: var(--txt-5);
+}
+
+h4 {
+  font-size: var(--txt-4);
+}
+
+h3 {
+  font-size: var(--txt-3);
+}
+
+h2 {
+  font-size: var(--txt-2);
+}
+
+h1 {
+  font-size: var(--txt-1);
+}

@@ -1,0 +1,33 @@
+---
+// Supports weights 200-800
+import "@fontsource-variable/plus-jakarta-sans";
+import "@styles/global.css";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="https://fav.farm/⛵" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Little Victories</title>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
+
+<style>
+  html,
+  body {
+    width: 100%;
+    height: 100%;
+  }
+
+  body {
+    font-family: "Plus Jakarta Sans Variable", sans-serif;
+    background: var(--light-blue, #bfdbf7);
+    color: var(--dark-blue, #071f36);
+  }
+</style>
