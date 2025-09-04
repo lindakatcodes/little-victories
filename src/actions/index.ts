@@ -1,5 +1,7 @@
 import { defineAction } from "astro:actions";
+import { db, Profiles } from "astro:db";
 import { z } from "astro:schema";
+import crypto from "node:crypto";
 
 export const server = {
   createProfile: defineAction({
@@ -9,8 +11,12 @@ export const server = {
       email: z.string().email(),
     }),
     handler: async ({ name, email }) => {
-      /* name and email need to get entered into the db */
-      return { name, email };
+      const id = crypto.randomUUID();
+      const newUser = await db
+        .insert(Profiles)
+        .values({ id, name, email })
+        .returning();
+      return newUser;
     },
   }),
 };

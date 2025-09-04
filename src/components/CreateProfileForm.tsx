@@ -11,7 +11,10 @@ export default function CreateProfileForm(
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
     const { data, error } = await actions.createProfile(formData);
-    if (!error) navigate("/");
+
+    if (error) return console.log({ error });
+    localStorage.setItem("userId", data[0].id);
+    navigate("/");
   }
 
   return (
