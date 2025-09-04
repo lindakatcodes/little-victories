@@ -10,11 +10,9 @@ export default function CreateProfileForm(
   async function submit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
-    const { data, error } = await actions.createProfile(formData);
-
-    if (error) return console.log({ error });
-    localStorage.setItem("userId", data[0].id);
-    navigate("/");
+    const { error } = await actions.createProfile(formData);
+    // would ideally like to be able to pass the new user info along with the navigation, but not sure how yet
+    if (!error) navigate("/");
   }
 
   return (

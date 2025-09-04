@@ -10,6 +10,7 @@ export const server = {
       name: z.string(),
       email: z.string().email(),
     }),
+    // can try storing the id as a cookie pulled in from the context option, but will need to adjust the path and expiration time so they last
     handler: async ({ name, email }) => {
       const id = crypto.randomUUID();
       const newUser = await db
