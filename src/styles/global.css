@@ -12,6 +12,7 @@ borrowing Tailwind's breakpoints:
   --light-blue: hsl(210 77.8% 85.9%); /* #BFDBF7 */
   --dark-blue: hsl(209 77% 12%); /* #071F36 */
   --ivory: hsl(73 52.9% 96.7%); /* #F9FBF2 */
+  --seagreen: hsl(186 75% 28.2%); /* #12747e */
   --txt-sm: 0.875rem;
   --txt: 1rem;
   --txt-lg: 1.2rem;
@@ -20,6 +21,15 @@ borrowing Tailwind's breakpoints:
   --txt-3: 2.07rem;
   --txt-2: 2.49rem;
   --txt-1: 2.99rem;
+}
+
+* {
+  letter-spacing: 0.125px;
+}
+
+*:focus {
+  outline: 2px solid var(--seagreen);
+  outline-offset: 2px;
 }
 
 p {
