@@ -4,7 +4,7 @@ const Profiles = defineTable({
   columns: {
     id: column.text({ primaryKey: true }),
     name: column.text(),
-    email: column.text(),
+    email: column.text({ unique: true }),
   },
 });
 

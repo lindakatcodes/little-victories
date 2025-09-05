@@ -1,18 +1,22 @@
-import type { FormEvent } from "react";
+import styles from "@styles/createProfileForm.module.css";
+import type { ComponentProps } from "astro/types";
 import { actions } from "astro:actions";
 import { navigate } from "astro:transitions/client";
-import type { ComponentProps } from "astro/types";
-import styles from "@styles/createProfileForm.module.css";
+import type { FormEvent } from "react";
+import { useState } from "react";
 
 export default function CreateProfileForm(
   props: ComponentProps<typeof String>
 ) {
+  const [emailError, setEmailError] = useState("");
   async function submit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
     const { error } = await actions.createProfile(formData);
-    // would ideally like to be able to pass the new user info along with the navigation, but not sure how yet
     if (!error) navigate("/");
+    if (error && error.code === "CONFLICT") {
+      setEmailError(`* ${error.message}`);
+    }
   }
 
   return (
@@ -36,6 +40,7 @@ export default function CreateProfileForm(
           required
           className={styles.input}
         />
+        <span className={styles.error}>{emailError}</span>
       </label>
       {props.submitButton}
     </form>
