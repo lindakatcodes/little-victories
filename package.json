@@ -4,12 +4,19 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "astro build --remote",
     "preview": "astro preview",
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/db": "^0.17.1",
+    "@astrojs/netlify": "^6.5.9",
+    "@astrojs/react": "^4.3.0",
     "@fontsource-variable/plus-jakarta-sans": "^5.2.6",
-    "astro": "^5.13.5"
+    "@types/react": "^19.1.12",
+    "@types/react-dom": "^19.1.9",
+    "astro": "^5.13.5",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1"
   }
 }

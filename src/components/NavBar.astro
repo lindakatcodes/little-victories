@@ -1,10 +1,30 @@
 ---
 import Button from "./Button.astro";
+import { db, Profiles, eq } from "astro:db";
+
+const userId = await Astro.cookies?.get("userId");
+let activeUser = "";
+if (userId) {
+  const user = await db
+    .select()
+    .from(Profiles)
+    .where(eq(Profiles.id, userId.value));
+  activeUser = user[0].name;
+}
 ---
 
 <nav>
   <a href="/" class="home">Little Victories</a>
-  <Button text="Sign In" inverseColor />
+  {
+    userId ? (
+      <div>
+        <p>Welcome back, {activeUser}</p>
+        <Button text="Log Out" inverseColor />
+      </div>
+    ) : (
+      <Button text="Sign In" inverseColor />
+    )
+  }
 </nav>
 
 <style>
@@ -26,5 +46,13 @@ import Button from "./Button.astro";
     font-weight: 600;
     font-size: var(--txt-lg);
     text-decoration: none;
+  }
+
+  div {
+    display: grid;
+    grid-template-columns: 1fr max-content;
+    align-items: center;
+    justify-items: center;
+    gap: 1rem;
   }
 </style>

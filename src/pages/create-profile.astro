@@ -1,0 +1,21 @@
+---
+export const prerender = false;
+import Button from "@components/Button.astro";
+import CreateProfileForm from "@components/CreateProfileForm";
+import MainLayout from "@layouts/MainLayout.astro";
+---
+
+<MainLayout>
+  <h1>Create Your Profile</h1>
+  <CreateProfileForm client:load>
+    <Button text="Create Profile" slot="submitButton" />
+  </CreateProfileForm>
+</MainLayout>
+
+<style>
+  h1 {
+    text-align: center;
+    margin: 1rem auto;
+    font-weight: 800;
+  }
+</style>
