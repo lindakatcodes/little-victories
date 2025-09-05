@@ -10,13 +10,19 @@ export const server = {
       name: z.string(),
       email: z.string().email(),
     }),
-    // can try storing the id as a cookie pulled in from the context option, but will need to adjust the path and expiration time so they last
-    handler: async ({ name, email }) => {
+    handler: async ({ name, email }, context) => {
       const id = crypto.randomUUID();
       const newUser = await db
         .insert(Profiles)
         .values({ id, name, email })
         .returning();
+
+      await context.cookies.set("userId", id, {
+        maxAge: 30 * 24 * 60 * 60, // 30 days in seconds
+        path: "/",
+        httpOnly: true,
+        secure: import.meta.env.PROD,
+      });
       return newUser;
     },
   }),
