@@ -2,14 +2,23 @@
 export const prerender = false;
 import Pitch from "@components/Pitch.astro";
 import MainLayout from "@layouts/MainLayout.astro";
+import { db, Profiles, eq } from "astro:db";
 
+let activeUser = "";
 const userId = await Astro.cookies?.get("userId");
+if (userId) {
+  const user = await db
+    .select()
+    .from(Profiles)
+    .where(eq(Profiles.id, userId.value));
+  activeUser = user.length > 0 ? user[0].name : "";
+}
 ---
 
 <MainLayout>
   <section>
     <h1>Little Victories</h1>
-    {userId ? <p>signed in </p> : <Pitch />}
+    {activeUser !== "" ? <p>signed in </p> : <Pitch />}
   </section>
 </MainLayout>
 
