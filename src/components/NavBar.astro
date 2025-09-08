@@ -1,28 +1,29 @@
 ---
+import { db, eq, Profiles } from "astro:db";
 import Button from "./Button.astro";
-import { db, Profiles, eq } from "astro:db";
+import LinkButton from "./LinkButton.astro";
 
-const userId = await Astro.cookies?.get("userId");
 let activeUser = "";
+const userId = await Astro.cookies?.get("userId");
 if (userId) {
   const user = await db
     .select()
     .from(Profiles)
     .where(eq(Profiles.id, userId.value));
-  activeUser = user[0].name;
+  activeUser = user.length > 0 ? user[0].name : "";
 }
 ---
 
 <nav>
   <a href="/" class="home">Little Victories</a>
   {
-    userId ? (
+    activeUser !== "" ? (
       <div>
         <p>Welcome back, {activeUser}</p>
-        <Button text="Log Out" inverseColor />
+        <Button text="Log Out" inverseColor action="logout" />
       </div>
     ) : (
-      <Button text="Sign In" inverseColor />
+      <LinkButton text="Sign In" href="/pick-profile" inverseColor />
     )
   }
 </nav>

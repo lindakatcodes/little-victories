@@ -1,16 +1,22 @@
 ---
+import type { actions } from "astro:actions";
+
 interface Props {
   text: String;
+  action?: keyof typeof actions;
   inverseColor?: Boolean;
+  type?: "button" | "submit" | "reset";
 }
 
-const { text, inverseColor = false } = Astro.props;
+const { text, action, inverseColor = false, type = "button" } = Astro.props;
 
 const bgColor = !inverseColor ? "var(--dark-blue)" : "var(--light-blue)";
 const txtColor = !inverseColor ? "var(--light-blue)" : "var(--dark-blue)";
 ---
 
-<button>{text}</button>
+<action-button data-action={action}>
+  <button type={type}>{text}</button>
+</action-button>
 
 <style define:vars={{ bgColor, txtColor }}>
   button {
@@ -21,3 +27,29 @@ const txtColor = !inverseColor ? "var(--light-blue)" : "var(--dark-blue)";
     font-weight: 500;
   }
 </style>
+
+<script>
+  import { actions } from "astro:actions";
+  import { navigate } from "astro:transitions/client";
+
+  class ActionButton extends HTMLElement {
+    connectedCallback() {
+      const action = this.dataset.action as keyof typeof actions | undefined;
+      const button = this.querySelector("button");
+      button!.addEventListener("click", async () => {
+        if (action) {
+          try {
+            console.log("processing action");
+            const result = await actions[action]({});
+            console.log({ result });
+            navigate("/");
+          } catch (error) {
+            console.error("Action failed:", error);
+          }
+        }
+      });
+    }
+  }
+
+  customElements.define("action-button", ActionButton);
+</script>

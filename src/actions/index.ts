@@ -36,4 +36,25 @@ export const server = {
       return newUser;
     },
   }),
+  login: defineAction({
+    input: z.object({
+      id: z.string(),
+    }),
+    handler: async ({ id }, context) => {
+      const user = await db.select().from(Profiles).where(eq(Profiles.id, id));
+      await context.cookies.set("userId", id, {
+        maxAge: 30 * 24 * 60 * 60,
+        path: "/",
+        httpOnly: true,
+        secure: import.meta.env.PROD,
+      });
+      return user;
+    },
+  }),
+  logout: defineAction({
+    handler: async (_input, context) => {
+      await context.cookies.delete("userId", { path: "/" });
+      return "signed out successfully";
+    },
+  }),
 };
