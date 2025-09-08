@@ -1,6 +1,8 @@
 import styles from "@styles/profileSearchForm.module.css";
 import type { FormEvent, PropsWithChildren } from "react";
 import { useState, useId } from "react";
+import { actions } from "astro:actions";
+import { navigate } from "astro:transitions/client";
 
 interface Profile {
   id: string;
@@ -50,11 +52,18 @@ export default function ProfileSearchForm({
         {filteredProfiles.length >= 1 && (
           <div className={styles.profiles}>
             {filteredProfiles.map((profile) => (
-              <div className={styles.resultsProfile} key={profile.id}>
+              <button
+                className={styles.resultsProfile}
+                key={profile.id}
+                onClick={async () => {
+                  const { error } = await actions.login({ id: profile.id });
+                  if (!error) navigate("/");
+                }}
+              >
                 <p>{profile.name}</p>
                 <span>|</span>
                 <p>{profile.email}</p>
-              </div>
+              </button>
             ))}
           </div>
         )}
