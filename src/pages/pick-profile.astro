@@ -1,4 +1,5 @@
 ---
+export const prerender = false;
 import LinkButton from "@components/LinkButton.astro";
 import ProfileSearchForm from "@components/ProfileSearchForm";
 import MainLayout from "@layouts/MainLayout.astro";
@@ -13,6 +14,7 @@ const allProfiles = await db.select().from(Profiles);
     <LinkButton text="Create Profile" href="/create-profile" />
   </ProfileSearchForm>
 </MainLayout>
+
 <style>
   h1 {
     text-align: center;

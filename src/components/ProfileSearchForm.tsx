@@ -1,24 +1,25 @@
-import styles from "@styles/ProfileSearchForm.module.css";
-import type { ComponentProps } from "astro/types";
-import type { FormEvent } from "react";
+import styles from "@styles/profileSearchForm.module.css";
+import type { FormEvent, PropsWithChildren } from "react";
 import { useState, useId } from "react";
 
-interface Props {
-  LinkButton: ComponentProps<typeof String>;
-  allProfiles: {
-    id: string;
-    name: string;
-    email: string;
-  }[];
+interface Profile {
+  id: string;
+  name: string;
+  email: string;
 }
 
-export default function ProfileSearchForm(props: Props) {
+interface ProfileSearchFormProps {
+  allProfiles: Profile[];
+}
+
+export default function ProfileSearchForm({
+  allProfiles,
+  children,
+}: PropsWithChildren<ProfileSearchFormProps>) {
   const id = useId();
   const emailId = `${id}-email`;
   const [query, setQuery] = useState("");
-  const [filteredProfiles, setFilteredProfiles] = useState<
-    Props["allProfiles"]
-  >([]);
+  const [filteredProfiles, setFilteredProfiles] = useState<Profile[]>([]);
 
   return (
     <section>
@@ -34,9 +35,7 @@ export default function ProfileSearchForm(props: Props) {
             setQuery(input);
             input.length >= 2
               ? setFilteredProfiles(
-                  props.allProfiles.filter((profile) =>
-                    profile.email.includes(input)
-                  )
+                  allProfiles.filter((profile) => profile.email.includes(input))
                 )
               : setFilteredProfiles([]);
           }}
@@ -66,7 +65,7 @@ export default function ProfileSearchForm(props: Props) {
               Hmm, it doesn't seem like we have a profile for this email. Would
               you like to make one?
             </p>
-            {props.LinkButton}
+            {children}
           </div>
         )}
       </div>
