@@ -51,4 +51,10 @@ export const server = {
       return user;
     },
   }),
+  logout: defineAction({
+    handler: async (_input, context) => {
+      await context.cookies.delete("userId", { path: "/" });
+      return "signed out successfully";
+    },
+  }),
 };

@@ -1,7 +1,7 @@
 ---
-import LinkButton from "./LinkButton.astro";
+import { db, eq, Profiles } from "astro:db";
 import Button from "./Button.astro";
-import { db, Profiles, eq } from "astro:db";
+import LinkButton from "./LinkButton.astro";
 
 let activeUser = "";
 const userId = await Astro.cookies?.get("userId");
@@ -20,7 +20,7 @@ if (userId) {
     activeUser !== "" ? (
       <div>
         <p>Welcome back, {activeUser}</p>
-        <Button text="Log Out" inverseColor />
+        <Button text="Log Out" inverseColor action="logout" />
       </div>
     ) : (
       <LinkButton text="Sign In" href="/pick-profile" inverseColor />
