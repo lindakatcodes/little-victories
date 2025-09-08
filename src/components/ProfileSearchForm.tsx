@@ -26,7 +26,7 @@ export default function ProfileSearchForm({
   return (
     <section>
       <form>
-        <label htmlFor={emailId}>Type your email below</label>
+        <label htmlFor={emailId}>Type your name or email below</label>
         <input
           type="email"
           id={emailId}
