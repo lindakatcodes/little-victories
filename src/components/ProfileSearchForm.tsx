@@ -37,7 +37,13 @@ export default function ProfileSearchForm({
             setQuery(input);
             input.length >= 2
               ? setFilteredProfiles(
-                  allProfiles.filter((profile) => profile.email.includes(input))
+                  allProfiles.filter(
+                    (profile) =>
+                      profile.email
+                        .toLowerCase()
+                        .includes(input.toLowerCase()) ||
+                      profile.name.toLowerCase().includes(input.toLowerCase())
+                  )
                 )
               : setFilteredProfiles([]);
           }}

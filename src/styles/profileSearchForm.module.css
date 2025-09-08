@@ -1,23 +1,23 @@
 section {
   max-inline-size: 95cqw;
-  margin: 0 auto;
+  margin: 0 auto 2rem;
   container-type: inline-size;
 
-  @media (width >= 64rem) {
+  @media (width >= 48rem) {
     & {
       max-inline-size: 60cqw;
     }
   }
 
-  @media (width >= 80rem) {
+  @media (width >= 64rem) {
     & {
       max-inline-size: 45cqw;
     }
   }
 
-  @media (width >= 96rem) {
+  @media (width >= 80rem) {
     & {
-      max-inline-size: 30cqw;
+      max-inline-size: 35cqw;
     }
   }
 }
@@ -44,12 +44,12 @@ input {
   font-size: 1.25rem;
   inline-size: 90cqw;
   margin: 0 auto 2rem;
-  text-wrap: balance;
+  text-wrap: pretty;
 }
 
 .profiles {
   display: grid;
-  gap: 0.5rem;
+  gap: 1.25rem;
   inline-size: 90cqw;
   margin: 0 auto;
 }
@@ -58,8 +58,10 @@ input {
   display: flex;
   gap: 1rem;
   padding: 0.75rem;
-  border: 2px solid var(--dark-blue);
   border-radius: 0.25rem;
+  background: var(--dark-blue);
+  color: var(--light-blue);
+  cursor: pointer;
 }
 
 .noResults {
