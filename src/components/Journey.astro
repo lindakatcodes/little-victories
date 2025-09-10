@@ -1,0 +1,142 @@
+---
+import { Image } from "astro:assets";
+import temp from "@assets/images/temp.png";
+---
+
+<section>
+  <div class="path">
+    <div class="tile one">1</div>
+    <div class="tile two">2</div>
+    <div class="tile three">3</div>
+    <div class="tile four">4</div>
+    <div class="tile five">5</div>
+    <div class="tile six">6</div>
+    <div class="tile seven">7</div>
+    <div class="tile eight">8</div>
+    <div class="tile nine">9</div>
+    <div class="tile ten">10</div>
+    <div class="tile eleven">11</div>
+    <div class="tile twelve">12</div>
+    <div class="tile thirteen">13</div>
+    <div class="tile fourteen">14</div>
+    <div class="tile fifteen">15</div>
+  </div>
+  <div class="reward">
+    <img
+      src="https://images.unsplash.com/photo-1564845654222-d437f029c5c4?q=80&w=1742&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+      alt=""
+    />
+  </div>
+</section>
+
+<style>
+  section {
+    inline-size: 80cqw;
+    margin: 0 auto;
+  }
+
+  .path {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(15, 1fr);
+    justify-items: center;
+  }
+
+  .tile {
+    inline-size: 2rem;
+    block-size: 2rem;
+    border: 1px solid var(--dark-blue);
+    border-radius: 0.25rem;
+    display: grid;
+    place-items: center;
+    margin: 0.375rem;
+  }
+
+  .one {
+    grid-column: 3;
+    grid-row: 1;
+  }
+
+  .two {
+    grid-column: 4;
+    grid-row: 2;
+  }
+
+  .three {
+    grid-column: 5;
+    grid-row: 3;
+  }
+
+  .four {
+    grid-column: 4;
+    grid-row: 4;
+  }
+
+  .five {
+    grid-column: 3;
+    grid-row: 5;
+  }
+
+  .six {
+    grid-column: 2;
+    grid-row: 6;
+  }
+
+  .seven {
+    grid-column: 1;
+    grid-row: 7;
+  }
+
+  .eight {
+    grid-column: 2;
+    grid-row: 8;
+  }
+
+  .nine {
+    grid-column: 3;
+    grid-row: 9;
+  }
+
+  .ten {
+    grid-column: 4;
+    grid-row: 10;
+  }
+
+  .eleven {
+    grid-column: 5;
+    grid-row: 11;
+  }
+
+  .twelve {
+    grid-column: 4;
+    grid-row: 12;
+  }
+
+  .thirteen {
+    grid-column: 3;
+    grid-row: 13;
+  }
+
+  .fourteen {
+    grid-column: 2;
+    grid-row: 14;
+  }
+
+  .fifteen {
+    grid-column: 1;
+    grid-row: 15;
+  }
+
+  .reward {
+    border: 0.25rem solid var(--ivory);
+    border-radius: 0.25rem;
+    aspect-ratio: 4 / 3;
+
+    & img {
+      inline-size: 100%;
+      block-size: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+  }
+</style>
