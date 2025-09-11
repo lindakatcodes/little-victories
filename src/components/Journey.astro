@@ -1,12 +1,16 @@
 ---
 import { actions } from "astro:actions";
+import type { Task, RewardPicture } from "@utils/types.ts";
 
 const userId = Astro.cookies.get("userId")!.value;
 const { data, error } = await Astro.callAction(actions.getActiveJourney, {
   id: userId,
 });
-console.log({ data });
-console.log({ error });
+if (error) console.log({ error });
+const tasks = data?.taskList as Task[];
+const reward = data?.rewardPic as RewardPicture;
+const rewardCredit = `${reward.creditUrl}${import.meta.env.UNSPLASH_REFERRER}`;
+const rewardSource = `https://unsplash.com/${import.meta.env.UNSPLASH_REFERRER}`;
 ---
 
 <section>
@@ -35,10 +39,24 @@ console.log({ error });
       </svg> -->
   <!-- </div> -->
   <div class="reward">
-    <img
-      src="https://images.unsplash.com/photo-1564845654222-d437f029c5c4?q=80&w=1742&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-      alt=""
-    />
+    {
+      data?.tasksCompleted === 15 ? (
+        <figure>
+          <img src={reward.smUrl} alt={reward.description} />
+          <figcaption>
+            <p>Photo by</p>
+            <a href={rewardCredit}>{reward.creditName}</a>
+            <p> on</p>
+            <a href={rewardSource}>Unsplash</a>
+          </figcaption>
+        </figure>
+      ) : (
+        <figure>
+          <img src={reward.blur_hash} alt="" />
+          <figcaption>Complete tasks to unlock the picture!</figcaption>
+        </figure>
+      )
+    }
   </div>
   <div class="path">
     <div class="tile fifteen">15</div>

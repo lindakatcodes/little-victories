@@ -1,14 +1,15 @@
 export interface Task {
-  taskId: Number;
-  taskComplete: Boolean;
-  taskAction: String;
+  taskId: number;
+  taskComplete: boolean;
+  taskAction: string;
 }
 
 export interface RewardPicture {
-  blur_hash: String;
-  description: String;
-  regUrl: String;
-  smUrl: String;
-  dlUrl: String;
-  creditUrl: String;
+  blur_hash: string;
+  description: string;
+  regUrl: string;
+  smUrl: string;
+  dlUrl: string;
+  creditUrl: string;
+  creditName: string;
 }

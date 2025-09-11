@@ -92,6 +92,7 @@ export const server = {
           smUrl: freshPic.urls.small,
           dlUrl: freshPic.links.download,
           creditUrl: freshPic.user.links.html,
+          creditName: freshPic.user.name,
         };
 
         const newJourney = {
