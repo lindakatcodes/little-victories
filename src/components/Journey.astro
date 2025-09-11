@@ -3,8 +3,8 @@
 ---
 
 <section>
-  <div class="path-wrapper">
-    <svg class="path-line" viewBox="0 0 300 574">
+  <!-- <div class="path-wrapper"> -->
+  <!-- <svg class="path-line" viewBox="0 0 300 574">
       <path
         d="M 150,19 
           L 210,57 
@@ -25,52 +25,53 @@
         stroke="var(--dark-blue)"
         stroke-width="1"
         stroke-linejoin="round"></path>
-    </svg>
-    <div class="path">
-      <div class="tile one">1</div>
-      <div class="tile two">2</div>
-      <div class="tile three">3</div>
-      <div class="tile four">4</div>
-      <div class="tile five">5</div>
-      <div class="tile six">6</div>
-      <div class="tile seven">7</div>
-      <div class="tile eight">8</div>
-      <div class="tile nine">9</div>
-      <div class="tile ten">10</div>
-      <div class="tile eleven">11</div>
-      <div class="tile twelve">12</div>
-      <div class="tile thirteen">13</div>
-      <div class="tile fourteen">14</div>
-      <div class="tile fifteen">15</div>
-    </div>
-  </div>
+      </svg> -->
+  <!-- </div> -->
   <div class="reward">
     <img
       src="https://images.unsplash.com/photo-1564845654222-d437f029c5c4?q=80&w=1742&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
       alt=""
     />
   </div>
+  <div class="path">
+    <div class="tile fifteen">15</div>
+    <div class="tile fourteen">14</div>
+    <div class="tile thirteen">13</div>
+    <div class="tile twelve">12</div>
+    <div class="tile eleven">11</div>
+    <div class="tile ten">10</div>
+    <div class="tile nine">9</div>
+    <div class="tile eight">8</div>
+    <div class="tile seven">7</div>
+    <div class="tile six">6</div>
+    <div class="tile five">5</div>
+    <div class="tile four">4</div>
+    <div class="tile three">3</div>
+    <div class="tile two">2</div>
+    <div class="tile one">1</div>
+  </div>
 </section>
 
 <style>
   section {
+    /* probably will need to adjust this some to maintain the aspect ratio? ratio is 0.52265 or 300 / 574; */
     container: inline-size;
     inline-size: 80cqw;
     margin: 0 auto;
   }
 
-  .path-wrapper {
+  /* .path-wrapper {
     position: relative;
-  }
+  } */
 
-  .path-line {
+  /* .path-line {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     z-index: -1;
-  }
+  } */
 
   .path {
     display: grid;
@@ -92,38 +93,38 @@
   }
 
   .one {
-    grid-column: 3;
-    grid-row: 1;
+    grid-column: 1;
+    grid-row: 15;
   }
 
   .two {
-    grid-column: 4;
-    grid-row: 2;
+    grid-column: 2;
+    grid-row: 14;
   }
 
   .three {
-    grid-column: 5;
-    grid-row: 3;
+    grid-column: 3;
+    grid-row: 13;
   }
 
   .four {
     grid-column: 4;
-    grid-row: 4;
+    grid-row: 12;
   }
 
   .five {
-    grid-column: 3;
-    grid-row: 5;
+    grid-column: 5;
+    grid-row: 11;
   }
 
   .six {
-    grid-column: 2;
-    grid-row: 6;
+    grid-column: 4;
+    grid-row: 10;
   }
 
   .seven {
-    grid-column: 1;
-    grid-row: 7;
+    grid-column: 3;
+    grid-row: 9;
   }
 
   .eight {
@@ -132,38 +133,38 @@
   }
 
   .nine {
-    grid-column: 3;
-    grid-row: 9;
+    grid-column: 1;
+    grid-row: 7;
   }
 
   .ten {
-    grid-column: 4;
-    grid-row: 10;
+    grid-column: 2;
+    grid-row: 6;
   }
 
   .eleven {
-    grid-column: 5;
-    grid-row: 11;
+    grid-column: 3;
+    grid-row: 5;
   }
 
   .twelve {
     grid-column: 4;
-    grid-row: 12;
+    grid-row: 4;
   }
 
   .thirteen {
-    grid-column: 3;
-    grid-row: 13;
+    grid-column: 5;
+    grid-row: 3;
   }
 
   .fourteen {
-    grid-column: 2;
-    grid-row: 14;
+    grid-column: 4;
+    grid-row: 2;
   }
 
   .fifteen {
-    grid-column: 1;
-    grid-row: 15;
+    grid-column: 3;
+    grid-row: 1;
   }
 
   .reward {
