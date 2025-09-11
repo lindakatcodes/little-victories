@@ -1,5 +1,6 @@
 ---
 export const prerender = false;
+import Journey from "@components/Journey.astro";
 import Pitch from "@components/Pitch.astro";
 import MainLayout from "@layouts/MainLayout.astro";
 import { db, Profiles, eq } from "astro:db";
@@ -18,7 +19,7 @@ if (userId) {
 <MainLayout>
   <section>
     <h1>Little Victories</h1>
-    {activeUser !== "" ? <p>signed in </p> : <Pitch />}
+    {activeUser !== "" ? <Journey /> : <Pitch />}
   </section>
 </MainLayout>
 
