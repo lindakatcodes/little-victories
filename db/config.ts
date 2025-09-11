@@ -8,6 +8,17 @@ const Profiles = defineTable({
   },
 });
 
+const Journeys = defineTable({
+  columns: {
+    id: column.text({ primaryKey: true }),
+    taskList: column.json(),
+    rewardPic: column.json(),
+    tasksCompleted: column.number({ default: 0 }),
+    isActiveJourney: column.boolean(),
+    userId: column.text({ references: () => Profiles.columns.id }),
+  },
+});
+
 export default defineDb({
-  tables: { Profiles },
+  tables: { Profiles, Journeys },
 });

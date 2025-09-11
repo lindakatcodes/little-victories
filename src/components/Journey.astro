@@ -1,5 +1,12 @@
 ---
+import { actions } from "astro:actions";
 
+const userId = Astro.cookies.get("userId")!.value;
+const { data, error } = await Astro.callAction(actions.getActiveJourney, {
+  id: userId,
+});
+console.log({ data });
+console.log({ error });
 ---
 
 <section>

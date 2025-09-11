@@ -1,7 +1,8 @@
 import { defineAction, ActionError } from "astro:actions";
-import { db, Profiles, eq } from "astro:db";
+import { db, Profiles, Journeys, eq, and } from "astro:db";
 import { z } from "astro:schema";
 import crypto from "node:crypto";
+import type { Task, RewardPicture } from "@utils/types.ts";
 
 export const server = {
   createProfile: defineAction({
@@ -55,6 +56,56 @@ export const server = {
     handler: async (_input, context) => {
       await context.cookies.delete("userId", { path: "/" });
       return "signed out successfully";
+    },
+  }),
+  getActiveJourney: defineAction({
+    input: z.object({
+      id: z.string(),
+    }),
+    handler: async ({ id }, ctx) => {
+      console.log("finding the journey");
+      const activeJourney = await db
+        .select()
+        .from(Journeys)
+        .where(
+          and(eq(Journeys.userId, id), eq(Journeys.isActiveJourney, true))
+        );
+      if (activeJourney.length > 0) {
+        return activeJourney[0];
+      } else {
+        const newTaskList: Task[] = Array.from({ length: 15 }, (_, index) => ({
+          taskId: index + 1,
+          taskComplete: false,
+          taskAction: "",
+        }));
+
+        const picUrl = `${
+          import.meta.env.UNSPLASH_API
+        }/photos/random?query=ocean&orientation=landscape&client_id=${
+          import.meta.env.UNSPLASH_ACCESS_KEY
+        }`;
+        const freshPic = await fetch(picUrl).then((res) => res.json());
+        const newReward: RewardPicture = {
+          blur_hash: freshPic.blur_hash,
+          description: freshPic.description,
+          regUrl: freshPic.urls.regular,
+          smUrl: freshPic.urls.small,
+          dlUrl: freshPic.links.download,
+          creditUrl: freshPic.user.links.html,
+        };
+
+        const newJourney = {
+          id: crypto.randomUUID(),
+          userId: id,
+          isActiveJourney: true,
+          tasksCompleted: 0,
+          taskList: newTaskList,
+          rewardPic: newReward,
+        };
+
+        await db.insert(Journeys).values(newJourney);
+        return newJourney;
+      }
     },
   }),
 };

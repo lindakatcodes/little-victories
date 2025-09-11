@@ -10,18 +10,11 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@assets/*": [
-        "src/assets/*"
-      ],
-      "@components/*": [
-        "src/components/*"
-      ],
-      "@layouts/*": [
-        "src/layouts/*"
-      ],
-      "@styles/*": [
-        "src/styles/*"
-      ]
+      "@assets/*": ["src/assets/*"],
+      "@components/*": ["src/components/*"],
+      "@layouts/*": ["src/layouts/*"],
+      "@styles/*": ["src/styles/*"],
+      "@utils/*": ["src/utils/*"]
     },
     "jsx": "react-jsx",
     "jsxImportSource": "react"
