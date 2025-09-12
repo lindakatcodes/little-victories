@@ -98,8 +98,14 @@ const reward = data?.rewardPic as RewardPicture;
   }
 
   .reward {
-    inline-size: 70%;
+    inline-size: 100%;
     margin: 0 auto;
+
+    @media (width >= 48rem) {
+      & {
+        inline-size: 70%;
+      }
+    }
   }
 
   /* .path-wrapper {
@@ -116,11 +122,18 @@ const reward = data?.rewardPic as RewardPicture;
   } */
 
   .path {
+    inline-size: 100%;
+    margin: 0 auto 1rem;
     display: grid;
-    grid-template-columns: repeat(5, 16cqw);
+    grid-template-columns: repeat(5, 1fr);
     grid-template-rows: repeat(15, 2.75rem);
     justify-items: center;
-    margin-bottom: 1rem;
+
+    @media (width >= 48rem) {
+      & {
+        inline-size: 70%;
+      }
+    }
   }
 
   .tile {
