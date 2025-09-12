@@ -1,0 +1,104 @@
+---
+import type { RewardPicture } from "@utils/types.ts";
+import { Icon } from "astro-icon/components";
+
+interface Props {
+  image: RewardPicture;
+  isLocked: boolean;
+}
+
+const { image, isLocked } = Astro.props;
+
+const rewardCredit = `${image.creditUrl}${import.meta.env.UNSPLASH_REFERRER}`;
+const rewardSource = `https://unsplash.com/${import.meta.env.UNSPLASH_REFERRER}`;
+---
+
+{
+  isLocked ? (
+    <figure>
+      <div class="fig-image">
+        <canvas
+          id="locked-reward"
+          data-blurhash={image.blur_hash}
+          width="48"
+          height="32"
+        />
+        <Icon name="lock" class="lock" />
+      </div>
+      <figcaption>Complete tasks to unlock!</figcaption>
+    </figure>
+  ) : (
+    <figure>
+      <div class="fig-image">
+        <img src={image.smUrl} alt={image.description} />
+      </div>
+      <figcaption>
+        <p>Photo by</p>
+        <a href={rewardCredit}>{image.creditName}</a>
+        <p>on</p>
+        <a href={rewardSource}>Unsplash</a>
+      </figcaption>
+    </figure>
+  )
+}
+
+<style>
+  figure {
+    border-radius: 0.25rem;
+    border: 0.25rem solid var(--seagreen);
+    margin-bottom: 1rem;
+  }
+
+  .fig-image {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    place-items: center;
+    aspect-ratio: 6 / 4;
+  }
+
+  canvas {
+    inline-size: 100%;
+    grid-area: 1 / 1;
+  }
+
+  .lock {
+    grid-area: 1 / 1;
+    width: 3rem;
+  }
+
+  img {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  figcaption {
+    background: var(--ivory);
+    display: inline-flex;
+    justify-content: center;
+    width: 100%;
+    gap: 0.25rem;
+    padding: 0.25rem;
+
+    & a {
+      color: var(--dark-blue);
+    }
+  }
+</style>
+
+<script>
+  import { decode } from "blurhash";
+
+  // create an element for the blurred picture when locked
+  const canvas = document.querySelector("#locked-reward") as HTMLCanvasElement;
+  const ctx = canvas!.getContext("2d");
+  const hash = canvas.dataset.blurhash || "";
+
+  const pixels = decode(hash, 48, 32);
+
+  const imageData = ctx!.createImageData(48, 32);
+  imageData.data.set(pixels);
+  ctx!.putImageData(imageData, 0, 0);
+</script>

@@ -7,8 +7,10 @@ import db from '@astrojs/db';
 
 import netlify from '@astrojs/netlify';
 
+import icon from 'astro-icon';
+
 // https://astro.build/config
 export default defineConfig({
-  integrations: [react(), db()],
+  integrations: [react(), db(), icon()],
   adapter: netlify()
 });

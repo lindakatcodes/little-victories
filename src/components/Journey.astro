@@ -1,6 +1,7 @@
 ---
 import { actions } from "astro:actions";
 import type { Task, RewardPicture } from "@utils/types.ts";
+import RewardImage from "./RewardImage.astro";
 
 const userId = Astro.cookies.get("userId")!.value;
 const { data, error } = await Astro.callAction(actions.getActiveJourney, {
@@ -9,8 +10,6 @@ const { data, error } = await Astro.callAction(actions.getActiveJourney, {
 if (error) console.log({ error });
 const tasks = data?.taskList as Task[];
 const reward = data?.rewardPic as RewardPicture;
-const rewardCredit = `${reward.creditUrl}${import.meta.env.UNSPLASH_REFERRER}`;
-const rewardSource = `https://unsplash.com/${import.meta.env.UNSPLASH_REFERRER}`;
 ---
 
 <section>
@@ -41,20 +40,9 @@ const rewardSource = `https://unsplash.com/${import.meta.env.UNSPLASH_REFERRER}`
   <div class="reward">
     {
       data?.tasksCompleted === 15 ? (
-        <figure>
-          <img src={reward.smUrl} alt={reward.description} />
-          <figcaption>
-            <p>Photo by</p>
-            <a href={rewardCredit}>{reward.creditName}</a>
-            <p> on</p>
-            <a href={rewardSource}>Unsplash</a>
-          </figcaption>
-        </figure>
+        <RewardImage isLocked={false} image={reward} />
       ) : (
-        <figure>
-          <img src={reward.blur_hash} alt="" />
-          <figcaption>Complete tasks to unlock the picture!</figcaption>
-        </figure>
+        <RewardImage isLocked={true} image={reward} />
       )
     }
   </div>
@@ -82,6 +70,35 @@ const rewardSource = `https://unsplash.com/${import.meta.env.UNSPLASH_REFERRER}`
     /* probably will need to adjust this some to maintain the aspect ratio? ratio is 0.52265 or 300 / 574; */
     container: inline-size;
     inline-size: 80cqw;
+    margin: 0 auto;
+
+    @media (width >= 48rem) {
+      & {
+        inline-size: 75cqw;
+      }
+    }
+
+    @media (width >= 64rem) {
+      & {
+        inline-size: 65cqw;
+      }
+    }
+
+    @media (width >= 80rem) {
+      & {
+        inline-size: 55cqw;
+      }
+    }
+
+    @media (width >= 96rem) {
+      & {
+        inline-size: 40cqw;
+      }
+    }
+  }
+
+  .reward {
+    inline-size: 70%;
     margin: 0 auto;
   }
 
@@ -190,18 +207,5 @@ const rewardSource = `https://unsplash.com/${import.meta.env.UNSPLASH_REFERRER}`
   .fifteen {
     grid-column: 3;
     grid-row: 1;
-  }
-
-  .reward {
-    border: 0.25rem solid var(--ivory);
-    border-radius: 0.25rem;
-    aspect-ratio: 4 / 3;
-
-    & img {
-      inline-size: 100%;
-      block-size: 100%;
-      object-fit: cover;
-      object-position: center;
-    }
   }
 </style>
