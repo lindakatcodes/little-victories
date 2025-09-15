@@ -63,7 +63,6 @@ export const server = {
       id: z.string(),
     }),
     handler: async ({ id }, ctx) => {
-      console.log("finding the journey");
       const activeJourney = await db
         .select()
         .from(Journeys)
@@ -77,7 +76,7 @@ export const server = {
           taskId: index + 1,
           taskComplete: false,
           taskAction: "",
-        }));
+        })).reverse();
 
         const picUrl = `${
           import.meta.env.UNSPLASH_API
@@ -100,6 +99,7 @@ export const server = {
           userId: id,
           isActiveJourney: true,
           tasksCompleted: 0,
+          currentTask: 1,
           taskList: newTaskList,
           rewardPic: newReward,
         };
