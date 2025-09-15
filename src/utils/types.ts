@@ -2,6 +2,7 @@ export interface Task {
   taskId: number;
   taskComplete: boolean;
   taskAction: string;
+  taskCompleteNotes: string;
 }
 
 export interface RewardPicture {

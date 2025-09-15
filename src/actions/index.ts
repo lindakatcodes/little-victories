@@ -76,6 +76,7 @@ export const server = {
           taskId: index + 1,
           taskComplete: false,
           taskAction: "",
+          taskCompleteNotes: "",
         })).reverse();
 
         const picUrl = `${

@@ -2,6 +2,7 @@
 import { actions } from "astro:actions";
 import { type Task, type RewardPicture, Numbers } from "@utils/types.ts";
 import RewardImage from "./RewardImage.astro";
+import TaskCard from "./TaskCard";
 
 const userId = Astro.cookies.get("userId")!.value;
 const { data, error } = await Astro.callAction(actions.getActiveJourney, {
@@ -35,7 +36,11 @@ const currentTask = data?.currentTask;
               { isActive: currentTask === task.taskId },
             ]}
           >
-            {task.taskId}
+            <TaskCard
+              task={task}
+              isCurrentTask={currentTask === task.taskId}
+              client:visible
+            />
           </div>
         ))
       }
@@ -107,17 +112,15 @@ const currentTask = data?.currentTask;
     grid-area: 1 / 1;
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    grid-template-rows: repeat(15, 3.5rem);
+    grid-template-rows: repeat(15, 6rem);
     place-items: center;
   }
 
   .tile {
-    inline-size: 2.5rem;
-    block-size: 2.5rem;
+    inline-size: 7rem;
+    block-size: 4.5rem;
     border: 2px solid var(--dark-blue);
     border-radius: 0.25rem;
-    display: grid;
-    place-items: center;
     background: var(--dark-blue);
     color: var(--light-blue);
   }
@@ -128,77 +131,77 @@ const currentTask = data?.currentTask;
   }
 
   .one {
-    grid-column: 1;
+    grid-column: 1 / span 2;
     grid-row: 15;
   }
 
   .two {
-    grid-column: 2;
+    grid-column: 2 / span 2;
     grid-row: 14;
   }
 
   .three {
-    grid-column: 3;
+    grid-column: 3 / span 2;
     grid-row: 13;
   }
 
   .four {
-    grid-column: 4;
+    grid-column: 4 / span 2;
     grid-row: 12;
   }
 
   .five {
-    grid-column: 5;
+    grid-column: 3 / span 2;
     grid-row: 11;
   }
 
   .six {
-    grid-column: 4;
+    grid-column: 2 / span 2;
     grid-row: 10;
   }
 
   .seven {
-    grid-column: 3;
+    grid-column: 1 / span 2;
     grid-row: 9;
   }
 
   .eight {
-    grid-column: 2;
+    grid-column: 2 / span 2;
     grid-row: 8;
   }
 
   .nine {
-    grid-column: 1;
+    grid-column: 3 / span 2;
     grid-row: 7;
   }
 
   .ten {
-    grid-column: 2;
+    grid-column: 4 / span 2;
     grid-row: 6;
   }
 
   .eleven {
-    grid-column: 3;
+    grid-column: 3 / span 2;
     grid-row: 5;
   }
 
   .twelve {
-    grid-column: 4;
+    grid-column: 2 / span 2;
     grid-row: 4;
   }
 
   .thirteen {
-    grid-column: 5;
+    grid-column: 1 / span 2;
     grid-row: 3;
   }
 
   .fourteen {
-    grid-column: 4;
+    grid-column: 2 / span 2;
     grid-row: 2;
   }
 
   .fifteen {
-    grid-column: 3;
+    grid-column: 3 / span 2;
     grid-row: 1;
   }
 </style>
@@ -254,5 +257,5 @@ const currentTask = data?.currentTask;
       block: "end",
       inline: "nearest",
     });
-  }, 2500);
+  }, 2000);
 </script>

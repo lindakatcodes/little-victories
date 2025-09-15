@@ -1,0 +1,70 @@
+.taskWrapper {
+  inline-size: 100%;
+  block-size: 100%;
+  display: grid;
+  place-items: center;
+
+  & > * {
+    font-size: var(--txt-sm);
+  }
+}
+
+.openBtn {
+  background: none;
+  color: inherit;
+  border: 1px solid var(--ivory);
+}
+
+.closeBtn {
+  background: var(--dark-blue);
+  color: var(--light-blue);
+  justify-self: end;
+}
+
+.doneBtn {
+  background: var(--dark-blue);
+  color: var(--light-blue);
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+::backdrop {
+  opacity: 0.85;
+  background-color: var(--dark-blue);
+}
+
+dialog {
+  background-color: var(--light-blue);
+  border-radius: 0.25rem;
+  border: 2px solid var(--dark-blue);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+form {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.taskPicker {
+  display: grid;
+  gap: 0.5rem;
+  justify-items: center;
+}
+
+.complete {
+  display: grid;
+  gap: 0.5rem;
+
+  & p {
+    justify-self: center;
+  }
+
+  & label {
+    margin-left: 0.25rem;
+  }
+}
