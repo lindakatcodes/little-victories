@@ -3,6 +3,7 @@ import { db, Profiles, Journeys, eq, and } from "astro:db";
 import { z } from "astro:schema";
 import crypto from "node:crypto";
 import type { Task, RewardPicture } from "@utils/types.ts";
+import { taskList } from "@utils/taskList";
 
 export const server = {
   createProfile: defineAction({
@@ -75,7 +76,7 @@ export const server = {
         const newTaskList: Task[] = Array.from({ length: 15 }, (_, index) => ({
           taskId: index + 1,
           taskComplete: false,
-          taskAction: "",
+          taskAction: taskList[index],
           taskCompleteNotes: "",
         })).reverse();
 
@@ -108,6 +109,39 @@ export const server = {
         await db.insert(Journeys).values(newJourney);
         return newJourney;
       }
+    },
+  }),
+  completeTask: defineAction({
+    input: z.object({
+      task: z.custom<Task>(),
+      journeyId: z.string(),
+    }),
+    handler: async ({ task, journeyId }) => {
+      const journey = await db
+        .select()
+        .from(Journeys)
+        .where(eq(Journeys.id, journeyId));
+      if (journey.length > 0) {
+        const updatedTaskList: Task[] = (journey[0].taskList as Task[]).map(
+          (existingTask: Task) =>
+            existingTask.taskId === task.taskId ? task : existingTask
+        );
+
+        await db
+          .update(Journeys)
+          .set({
+            taskList: updatedTaskList,
+            tasksCompleted: journey[0].tasksCompleted + 1,
+            currentTask: task.taskId === 15 ? 15 : task.taskId + 1,
+          })
+          .where(eq(Journeys.id, journeyId));
+
+        return { success: true, updatedTask: task };
+      }
+      throw new ActionError({
+        code: "NOT_FOUND",
+        message: "Journey not found",
+      });
     },
   }),
 };

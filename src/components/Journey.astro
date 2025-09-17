@@ -36,11 +36,7 @@ const currentTask = data?.currentTask;
               { isActive: currentTask === task.taskId },
             ]}
           >
-            <TaskCard
-              task={task}
-              isCurrentTask={currentTask === task.taskId}
-              client:visible
-            />
+            <TaskCard task={task} journeyId={data!.id} client:visible />
           </div>
         ))
       }

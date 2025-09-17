@@ -1,7 +1,10 @@
 export interface Task {
   taskId: number;
+  taskAction: {
+    task: string;
+    tip: string;
+  };
   taskComplete: boolean;
-  taskAction: string;
   taskCompleteNotes: string;
 }
 
