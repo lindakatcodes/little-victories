@@ -5,9 +5,10 @@ import { Icon } from "astro-icon/components";
 interface Props {
   image: RewardPicture;
   isLocked: boolean;
+  tasksCompleted: number;
 }
 
-const { image, isLocked } = Astro.props;
+const { image, isLocked, tasksCompleted } = Astro.props;
 
 const rewardCredit = `${image.creditUrl}${import.meta.env.UNSPLASH_REFERRER}`;
 const rewardSource = `https://unsplash.com/${import.meta.env.UNSPLASH_REFERRER}`;
@@ -23,7 +24,10 @@ const rewardSource = `https://unsplash.com/${import.meta.env.UNSPLASH_REFERRER}`
           width="48"
           height="32"
         />
-        <Icon name="lock" class="lock" />
+        <div class="lock">
+          <Icon name="lock" />
+          <p>{`${tasksCompleted}/15 tasks`}</p>
+        </div>
       </div>
       <figcaption>Complete tasks to unlock!</figcaption>
     </figure>
@@ -65,7 +69,19 @@ const rewardSource = `https://unsplash.com/${import.meta.env.UNSPLASH_REFERRER}`
 
   .lock {
     grid-area: 1 / 1;
-    width: 3rem;
+    width: 6rem;
+    color: var(--light-blue);
+    background-color: rgba(7, 31, 54, 0.4);
+    border-radius: 0.25rem;
+    padding: 0.5rem;
+    display: grid;
+    justify-items: center;
+    grid-template-rows: 2fr 1fr;
+    z-index: 1;
+
+    & svg {
+      width: 3rem;
+    }
   }
 
   img {

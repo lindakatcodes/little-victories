@@ -16,7 +16,6 @@ const Journeys = defineTable({
     rewardPic: column.json(),
     tasksCompleted: column.number({ default: 0 }),
     isActiveJourney: column.boolean(),
-    currentTask: column.number(),
   },
 });
 

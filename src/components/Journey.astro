@@ -11,16 +11,28 @@ const { data, error } = await Astro.callAction(actions.getActiveJourney, {
 if (error) console.log({ error });
 const tasks = data?.taskList as Task[];
 const reward = data?.rewardPic as RewardPicture;
-const currentTask = data?.currentTask;
+
+const findJobTask = tasks.find(
+  (task) => task.taskAction.task === "Find a job to apply for"
+);
+const findJobTaskDone = findJobTask ? findJobTask.taskComplete : false;
 ---
 
 <section>
   <div class="reward">
     {
       data?.tasksCompleted === 15 ? (
-        <RewardImage isLocked={false} image={reward} />
+        <RewardImage
+          isLocked={false}
+          image={reward}
+          tasksCompleted={data?.tasksCompleted}
+        />
       ) : (
-        <RewardImage isLocked={true} image={reward} />
+        <RewardImage
+          isLocked={true}
+          image={reward}
+          tasksCompleted={data?.tasksCompleted || 0}
+        />
       )
     }
   </div>
@@ -33,10 +45,15 @@ const currentTask = data?.currentTask;
           <div
             class:list={[
               `tile ${Numbers[task.taskId]}`,
-              { isActive: currentTask === task.taskId },
+              { isCompleted: task.taskComplete },
             ]}
           >
-            <TaskCard task={task} journeyId={data!.id} client:visible />
+            <TaskCard
+              task={task}
+              journeyId={data!.id}
+              taskPrereq={findJobTaskDone}
+              client:visible
+            />
           </div>
         ))
       }
@@ -102,6 +119,7 @@ const currentTask = data?.currentTask;
     grid-area: 1 / 1;
     inline-size: 100%;
     block-size: 100%;
+    z-index: -1;
   }
 
   .path {
@@ -110,20 +128,20 @@ const currentTask = data?.currentTask;
     grid-template-columns: repeat(5, 1fr);
     grid-template-rows: repeat(15, 6rem);
     place-items: center;
+    row-gap: 0.75rem;
   }
 
   .tile {
     inline-size: 7rem;
-    block-size: 4.5rem;
+    block-size: 5.5rem;
     border: 2px solid var(--dark-blue);
     border-radius: 0.25rem;
-    background: var(--dark-blue);
-    color: var(--light-blue);
+    background: var(--light-blue);
   }
 
-  .isActive {
-    background: var(--light-blue);
-    color: var(--dark-blue);
+  .isCompleted {
+    background: var(--dark-blue;e);
+    color: var(--light-blue);
   }
 
   .one {
@@ -244,14 +262,4 @@ const currentTask = data?.currentTask;
   drawPath();
 
   window.addEventListener("resize", drawPath);
-
-  // the journey builds up, so we want to scroll the user to their current task once it loads in
-  const currentTask = document.querySelector(".isActive");
-  setTimeout(() => {
-    currentTask?.scrollIntoView({
-      behavior: "smooth",
-      block: "end",
-      inline: "nearest",
-    });
-  }, 2000);
 </script>

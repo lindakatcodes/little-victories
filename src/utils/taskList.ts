@@ -29,7 +29,7 @@ export const taskList = [
   },
   {
     task: "Do the application",
-    tip: "Time to send in your application! Use the work you've done on researching the company and finding your fit and make sure to highlight those points when filling out the application. If they don't have any specific questions in the application to explain how awesome you'd be, make sure to include a cover letter detailing those points for them.",
+    tip: "Time to send in your application! Use the work you've done on researching the company and finding your fit and make sure to highlight those points when filling out the application. If they don't have any specific questions in the application to explain how awesome you'd be, make sure to include a cover letter detailing those points for them. NOTE: this is the only task with a prerequisite! You must have completed the 'Find a job to apply for' task first in order to complete this.",
   },
   {
     task: "LinkedIn post - role fit",

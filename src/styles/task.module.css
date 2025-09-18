@@ -3,16 +3,23 @@
   block-size: 100%;
   display: grid;
   place-items: center;
-
-  & > * {
-    font-size: var(--txt-sm);
-  }
 }
 
 .openBtn {
   background: none;
   color: inherit;
-  border: 1px solid var(--ivory);
+  border: none;
+  inline-size: 100%;
+  block-size: 100%;
+  
+  & p {
+    font-size: var(--txt-sm);
+  }
+
+  &:focus {
+    outline-offset: 0.25rem;
+    border-radius: 0.125rem;
+  }
 }
 
 .closeBtn {

@@ -1,25 +1,32 @@
 import styles from "@styles/task.module.css";
 import { type Task } from "@utils/types.ts";
+import { Icon } from "astro-icon/components";
 import { actions } from "astro:actions";
 import { useRef, useState } from "react";
 
 export default function TaskCard({
   task,
   journeyId,
+  taskPrereq,
 }: {
   task: Task;
   journeyId: string;
+  taskPrereq: boolean;
 }) {
   const detailsDialogRef = useRef<HTMLDialogElement | null>(null);
   const completionDialogRef = useRef<HTMLDialogElement | null>(null);
   const [completedDescription, setCompletedDescription] = useState("");
 
+  const allowCompletion =
+    task.taskAction.task !== "Do the application" ? true : taskPrereq;
+
   const openDetailsDialog = () => {
     if (detailsDialogRef.current) detailsDialogRef.current.showModal();
   };
 
-  const closeDetailsDialog = () => {
+  const closeDialog = () => {
     if (detailsDialogRef.current) detailsDialogRef.current.close();
+    if (completionDialogRef.current) completionDialogRef.current.close();
   };
 
   const openCompleteDialog = () => {
@@ -27,7 +34,9 @@ export default function TaskCard({
     if (completionDialogRef.current) completionDialogRef.current.showModal();
   };
 
-  const handleCompletion = async () => {
+  const handleCompletion = async (e: React.FormEvent) => {
+    e.preventDefault();
+
     const updatedTask = {
       ...task,
       taskComplete: true,
@@ -46,24 +55,35 @@ export default function TaskCard({
   return (
     <>
       <div className={styles.taskWrapper}>
-        <button className={styles.openBtn} onClick={openDetailsDialog}>
-          {task.taskAction.task}
-        </button>
+        {!task.taskComplete ? (
+          <button className={styles.openBtn} onClick={openDetailsDialog}>
+            <p>{task.taskId}</p>
+            <p>{task.taskAction.task}</p>
+          </button>
+        ) : (
+          <Icon name="star-filled" class={styles.taskComplete} />
+        )}
       </div>
 
       <dialog ref={detailsDialogRef}>
-        <button className={styles.closeBtn} onClick={closeDetailsDialog}>
+        <button className={styles.closeBtn} onClick={closeDialog}>
           Close
         </button>
         <p>{task.taskAction.tip}</p>
-
-        <button className={styles.doneBtn} onClick={openCompleteDialog}>
+        <button
+          className={styles.doneBtn}
+          onClick={openCompleteDialog}
+          disabled={allowCompletion}
+        >
           Mark as Completed!
         </button>
       </dialog>
 
       <dialog ref={completionDialogRef}>
-        <div className={styles.complete}>
+        <form className={styles.completeForm}>
+          <button className={styles.closeBtn} onClick={closeDialog}>
+            Close
+          </button>
           <label htmlFor="textarea">
             Leave a note for yourself of what you did to complete this task:
           </label>
@@ -81,7 +101,7 @@ export default function TaskCard({
           >
             Save note & complete
           </button>
-        </div>
+        </form>
       </dialog>
     </>
   );
