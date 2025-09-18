@@ -88,24 +88,36 @@ const findJobTaskDone = findJobTask ? findJobTask.taskComplete : false;
   }
 
   .reward {
-    inline-size: 100%;
+    inline-size: 80cqw;
     margin: 0 auto;
 
     @media (width >= 48rem) {
       & {
-        inline-size: 70%;
+        inline-size: 60cqw;
+      }
+    }
+
+    @media (width >= 80rem) {
+      & {
+        inline-size: 50cqw;
       }
     }
   }
 
   .path-wrapper {
-    inline-size: 100%;
+    inline-size: 80cqw;
     margin: 0 auto 2rem;
     display: grid;
 
     @media (width >= 48rem) {
       & {
-        inline-size: 70%;
+        inline-size: 60cqw;
+      }
+    }
+
+    @media (width >= 80rem) {
+      & {
+        inline-size: 50cqw;
       }
     }
   }
