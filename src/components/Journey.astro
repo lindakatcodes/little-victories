@@ -1,5 +1,4 @@
 ---
-import ClosedLock from "@icons/lock.svg";
 import StarFilled from "@icons/star-filled.svg";
 import { type RewardPicture, type Task, Numbers } from "@utils/types.ts";
 import { actions } from "astro:actions";
@@ -30,10 +29,7 @@ const findJobTaskDone = findJobTask ? findJobTask.taskComplete : false;
       image={reward}
       initialTasksCompleted={data?.tasksCompleted || 0}
       client:load
-    >
-      <ClosedLock />
-      <!-- <OpenLock /> -->
-    </RewardImage>
+    />
   </div>
 
   <div class="path-wrapper">

@@ -1,28 +1,28 @@
+// @ts-expect-error
+import ClosedLock from "@icons/lock.svg?react";
+// @ts-expect-error
+import OpenLock from "@icons/open-lock.svg?react";
 import { useStore } from "@nanostores/react";
 import { totalTasksCompleted } from "@stores/taskStore";
 import styles from "@styles/rewardImage.module.css";
 import type { RewardPicture } from "@utils/types.ts";
 import { decode } from "blurhash";
-import type { PropsWithChildren } from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 interface Props {
   image: RewardPicture;
   initialTasksCompleted: number;
 }
 
-export default function RewardImage({
-  image,
-  initialTasksCompleted,
-  children,
-}: PropsWithChildren<Props>) {
+export default function RewardImage({ image, initialTasksCompleted }: Props) {
   const tasksCompleted = useStore(totalTasksCompleted);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [showUnlocked, setShowUnlocked] = useState(false);
 
   const rewardCredit = `${image.creditUrl}${import.meta.env.UNSPLASH_REFERRER}`;
   const rewardSource = `https://unsplash.com/${
     import.meta.env.UNSPLASH_REFERRER
   }`;
-  const isLocked = tasksCompleted === 15 ? false : true;
 
   // create an element for the blurred picture when locked
   useEffect(() => {
@@ -47,32 +47,57 @@ export default function RewardImage({
     totalTasksCompleted.set(initialTasksCompleted);
   }, []);
 
-  return isLocked ? (
+  // watches for all tasks to be complete to trigger a reward animation
+  useEffect(() => {
+    if (tasksCompleted === 15) {
+      setIsAnimating(true);
+      setTimeout(() => {
+        setShowUnlocked(true);
+      }, 800);
+    }
+  }, [tasksCompleted]);
+
+  return (
     <figure>
       <div className={styles.figImage}>
-        <canvas
-          id="locked-reward"
-          data-blurhash={image.blur_hash}
-          width="48"
-          height="32"
-        />
-        <div className={styles.lock}>
-          {children}
-          <p>{`${tasksCompleted}/15 tasks`}</p>
-        </div>
-      </div>
-      <figcaption>Complete tasks to unlock!</figcaption>
-    </figure>
-  ) : (
-    <figure>
-      <div className={styles.figImage}>
-        <img src={image.smUrl} alt={image.description} />
+        {(!showUnlocked || isAnimating) && (
+          <canvas
+            id="locked-reward"
+            data-blurhash={image.blur_hash}
+            width="48"
+            height="32"
+            className={isAnimating ? styles.fadeOut : ""}
+          />
+        )}
+        {(showUnlocked || isAnimating) && (
+          <img
+            src={image.smUrl}
+            alt={image.description}
+            className={isAnimating ? styles.fadeIn : ""}
+          />
+        )}
+        {(!showUnlocked || isAnimating) && (
+          <div
+            className={`${styles.lock} ${
+              isAnimating ? styles.unlockAnimation : ""
+            }`}
+          >
+            {isAnimating ? <OpenLock /> : <ClosedLock />}
+            <p>{`${tasksCompleted}/15 tasks`}</p>
+          </div>
+        )}
       </div>
       <figcaption>
-        <p>Photo by</p>
-        <a href={rewardCredit}>{image.creditName}</a>
-        <p>on</p>
-        <a href={rewardSource}>Unsplash</a>
+        {showUnlocked ? (
+          <>
+            <p>Photo by</p>
+            <a href={rewardCredit}>{image.creditName}</a>
+            <p>on</p>
+            <a href={rewardSource}>Unsplash</a>
+          </>
+        ) : (
+          "Complete tasks to unlock!"
+        )}
       </figcaption>
     </figure>
   );
