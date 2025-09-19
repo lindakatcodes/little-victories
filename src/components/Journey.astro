@@ -1,8 +1,11 @@
 ---
+export const prerender = false;
 import { actions } from "astro:actions";
 import { type Task, type RewardPicture, Numbers } from "@utils/types.ts";
 import RewardImage from "./RewardImage.astro";
 import TaskCard from "./TaskCard";
+import StarFilled from "../icons/star-filled.svg";
+import { findRoleTaskStatus } from "@stores/taskStore";
 
 const userId = Astro.cookies.get("userId")!.value;
 const { data, error } = await Astro.callAction(actions.getActiveJourney, {
@@ -16,6 +19,7 @@ const findJobTask = tasks.find(
   (task) => task.taskAction.task === "Find a job to apply for"
 );
 const findJobTaskDone = findJobTask ? findJobTask.taskComplete : false;
+findRoleTaskStatus.set(findJobTaskDone);
 ---
 
 <section>
@@ -48,7 +52,9 @@ const findJobTaskDone = findJobTask ? findJobTask.taskComplete : false;
               journeyId={data!.id}
               taskPrereq={findJobTaskDone}
               client:visible
-            />
+            >
+              <StarFilled />
+            </TaskCard>
           </div>
         ))
       }

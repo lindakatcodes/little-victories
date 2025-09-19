@@ -88,7 +88,11 @@ dialog {
   inline-size: 100%;
   block-size: 100%;
   background: var(--dark-blue);
-  color: var(--light-blue);
   display: grid;
   place-items: center;
+
+  & svg {
+    inline-size: 2.5rem;
+    color: var(--light-blue);
+  }
 }

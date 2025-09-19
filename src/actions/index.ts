@@ -132,7 +132,6 @@ export const server = {
           .set({
             taskList: updatedTaskList,
             tasksCompleted: journey[0].tasksCompleted + 1,
-            currentTask: task.taskId === 15 ? 15 : task.taskId + 1,
           })
           .where(eq(Journeys.id, journeyId));
 
