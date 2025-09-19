@@ -1,21 +1,21 @@
+import { useStore } from "@nanostores/react";
+import { findRoleTaskStatus, totalTasksCompleted } from "@stores/taskStore";
 import styles from "@styles/task.module.css";
 import { type Task } from "@utils/types.ts";
 import { actions } from "astro:actions";
-import { useEffect, useRef, useState } from "react";
 import type { PropsWithChildren } from "react";
-import { useStore } from "@nanostores/react";
-import { findRoleTaskStatus } from "@stores/taskStore";
+import { useEffect, useRef, useState } from "react";
 
 interface TaskCardProps {
   task: Task;
   journeyId: string;
-  taskPrereq: boolean;
+  findJobPrereq: boolean;
 }
 
 export default function TaskCard({
   task,
   journeyId,
-  taskPrereq,
+  findJobPrereq,
   children,
 }: PropsWithChildren<TaskCardProps>) {
   const detailsDialogRef = useRef<HTMLDialogElement | null>(null);
@@ -23,12 +23,13 @@ export default function TaskCard({
   const [completedDescription, setCompletedDescription] = useState("");
   const [taskComplete, setTaskComplete] = useState(task.taskComplete);
   const isFindRoleTaskComplete = useStore(findRoleTaskStatus);
+  const tasksCompletedCount = useStore(totalTasksCompleted);
 
-  // useEffect(() => {
-  //   findRoleTaskStatus.set(taskPrereq);
-  // }, [taskPrereq]);
+  useEffect(() => {
+    findRoleTaskStatus.set(findJobPrereq);
+  }, []);
 
-  // a few tasks are specifically related to finding a role to apply for and doing the work to fill the application well. these we want to not let be completed unless you've already found a role - otherwise they don't make sense.
+  // a few tasks are specifically related to finding a role to apply for and doing the work to fill out the application well. these we want to not let be completed unless you've already found a role - otherwise they don't make sense.
   const taskIdsWithPrereq = [5, 7, 8];
 
   const allowCompletion = taskIdsWithPrereq.includes(task.taskId)
@@ -56,22 +57,31 @@ export default function TaskCard({
   const handleCompletion = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    // create a clean copy with our updated info
     const updatedTask = {
       ...task,
       taskComplete: true,
       taskCompleteNotes: completedDescription,
     };
 
+    // update the db
     const { error } = await actions.completeTask({
       task: updatedTask,
       journeyId: journeyId,
     });
 
+    // if the db entry went well, we need to tell this card the task is complete, check for if it was the prereq for other tasks and if so update that, and update the count of completed tasks
     if (!error) {
       setTaskComplete(true);
+
       if (task.taskAction.task === "Find a job to apply for") {
         findRoleTaskStatus.set(true);
       }
+
+      const newTasksCompletedTotal = tasksCompletedCount + 1;
+      totalTasksCompleted.set(newTasksCompletedTotal);
+
+      // then finally closing the dialog itself
       if (completionDialogRef.current) completionDialogRef.current.close();
     } else {
       console.log({ error });

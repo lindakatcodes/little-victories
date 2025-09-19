@@ -11,7 +11,7 @@
   border: none;
   inline-size: 100%;
   block-size: 100%;
-  
+
   & p {
     font-size: var(--txt-sm);
   }
@@ -27,12 +27,14 @@
   color: var(--light-blue);
   justify-self: end;
   border-radius: 0.25rem;
+  padding: 0.5rem;
 }
 
 .doneBtn {
   background: var(--dark-blue);
   color: var(--light-blue);
   border-radius: 0.25rem;
+  padding: 0.5rem;
 
   &:disabled {
     opacity: 0.5;
@@ -54,7 +56,8 @@ dialog {
   transform: translate(-50%, -50%);
   inline-size: 85dvw;
 
-  & form, & div {
+  & form,
+  & div {
     display: grid;
     gap: 1.25rem;
 

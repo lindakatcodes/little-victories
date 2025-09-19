@@ -1,0 +1,56 @@
+figure {
+  border-radius: 0.25rem;
+  border: 0.25rem solid var(--seagreen);
+  margin-bottom: 1rem;
+}
+
+.figImage {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+  place-items: center;
+  aspect-ratio: 6 / 4;
+  box-shadow: -4px 7px 15px -3px var(--dark-blue);
+}
+
+canvas {
+  inline-size: 100%;
+  grid-area: 1 / 1;
+}
+
+.lock {
+  grid-area: 1 / 1;
+  width: 7rem;
+  color: var(--light-blue);
+  background-color: rgba(7, 31, 54, 0.4);
+  border-radius: 0.25rem;
+  padding: 0.5rem;
+  display: grid;
+  justify-items: center;
+  grid-template-rows: 2fr 1fr;
+  z-index: 1;
+
+  & svg {
+    width: 3rem;
+  }
+}
+
+img {
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+figcaption {
+  background: var(--ivory);
+  display: inline-flex;
+  justify-content: center;
+  width: 100%;
+  gap: 0.25rem;
+  padding: 0.25rem;
+
+  & a {
+    color: var(--dark-blue);
+  }
+}

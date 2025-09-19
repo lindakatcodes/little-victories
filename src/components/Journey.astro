@@ -1,56 +1,51 @@
 ---
-export const prerender = false;
+import ClosedLock from "@icons/lock.svg";
+import StarFilled from "@icons/star-filled.svg";
+import { type RewardPicture, type Task, Numbers } from "@utils/types.ts";
 import { actions } from "astro:actions";
-import { type Task, type RewardPicture, Numbers } from "@utils/types.ts";
-import RewardImage from "./RewardImage.astro";
+import RewardImage from "./RewardImage";
 import TaskCard from "./TaskCard";
-import StarFilled from "../icons/star-filled.svg";
-import { findRoleTaskStatus } from "@stores/taskStore";
 
+// get the user's current journey
 const userId = Astro.cookies.get("userId")!.value;
 const { data, error } = await Astro.callAction(actions.getActiveJourney, {
   id: userId,
 });
 if (error) console.log({ error });
+
+// splitting tasks and rewards into their own variables so we can enforce the schema
 const tasks = data?.taskList as Task[];
 const reward = data?.rewardPic as RewardPicture;
 
+// this task is a prereq for a few others, so when the page loads we want to check it's status to pass along to the task cards
 const findJobTask = tasks.find(
   (task) => task.taskAction.task === "Find a job to apply for"
 );
 const findJobTaskDone = findJobTask ? findJobTask.taskComplete : false;
-findRoleTaskStatus.set(findJobTaskDone);
 ---
 
 <section>
   <div class="reward">
-    {
-      data?.tasksCompleted === 15 ? (
-        <RewardImage
-          isLocked={false}
-          image={reward}
-          tasksCompleted={data?.tasksCompleted}
-        />
-      ) : (
-        <RewardImage
-          isLocked={true}
-          image={reward}
-          tasksCompleted={data?.tasksCompleted || 0}
-        />
-      )
-    }
+    <RewardImage
+      image={reward}
+      initialTasksCompleted={data?.tasksCompleted || 0}
+      client:load
+    >
+      <ClosedLock />
+      <!-- <OpenLock /> -->
+    </RewardImage>
   </div>
 
   <div class="path-wrapper">
     <canvas class="path-canvas"></canvas>
-    <div class="path">
+    <div class="path-tiles">
       {
         tasks.map((task) => (
           <div class:list={[`tile ${Numbers[task.taskId]}`]}>
             <TaskCard
               task={task}
               journeyId={data!.id}
-              taskPrereq={findJobTaskDone}
+              findJobPrereq={findJobTaskDone}
               client:visible
             >
               <StarFilled />
@@ -135,7 +130,7 @@ findRoleTaskStatus.set(findJobTaskDone);
     z-index: -1;
   }
 
-  .path {
+  .path-tiles {
     grid-area: 1 / 1;
     display: grid;
     grid-template-columns: repeat(5, 1fr);
@@ -232,7 +227,7 @@ findRoleTaskStatus.set(findJobTaskDone);
   // thanks Claude - creates the lines to connect all the tiles together
   function drawPath() {
     const canvas = document.querySelector(".path-canvas") as HTMLCanvasElement;
-    const path = document.querySelector(".path") as HTMLElement;
+    const path = document.querySelector(".path-tiles") as HTMLElement;
     const tiles = Array.from(document.querySelectorAll(".tile"));
 
     if (!canvas || !path) return;
