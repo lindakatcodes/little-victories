@@ -1,0 +1,101 @@
+.taskWrapper {
+  inline-size: 100%;
+  block-size: 100%;
+  display: grid;
+  place-items: center;
+}
+
+.openBtn {
+  background: none;
+  color: inherit;
+  border: none;
+  inline-size: 100%;
+  block-size: 100%;
+
+  & p {
+    font-size: var(--txt-sm);
+  }
+
+  &:focus {
+    outline-offset: 0.25rem;
+    border-radius: 0.125rem;
+  }
+}
+
+.closeBtn {
+  background: var(--dark-blue);
+  color: var(--light-blue);
+  justify-self: end;
+  border-radius: 0.25rem;
+  padding: 0.5rem;
+}
+
+.doneBtn {
+  background: var(--dark-blue);
+  color: var(--light-blue);
+  border-radius: 0.25rem;
+  padding: 0.5rem;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+::backdrop {
+  opacity: 0.85;
+  background-color: var(--dark-blue);
+}
+
+dialog {
+  background-color: var(--light-blue);
+  border-radius: 0.25rem;
+  border: 2px solid var(--dark-blue);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  inline-size: 85dvw;
+
+  & form,
+  & div {
+    display: grid;
+    gap: 1.25rem;
+
+    & textarea {
+      border-radius: 0.25rem;
+      padding: 0.25rem 0.375rem;
+      border-color: var(--dark-blue);
+    }
+  }
+
+  @media (width >= 64rem) {
+    & {
+      inline-size: 65dvw;
+    }
+  }
+
+  @media (width >= 80rem) {
+    & {
+      inline-size: 50dvw;
+    }
+  }
+
+  @media (width >= 96rem) {
+    & {
+      inline-size: 35dvw;
+    }
+  }
+}
+
+.completed {
+  inline-size: 100%;
+  block-size: 100%;
+  background: var(--dark-blue);
+  display: grid;
+  place-items: center;
+
+  & svg {
+    inline-size: 2.5rem;
+    color: var(--light-blue);
+  }
+}
