@@ -5,6 +5,41 @@ import crypto from "node:crypto";
 import type { Task, RewardPicture } from "@utils/types.ts";
 import { taskList } from "@utils/taskList";
 
+const createNewJourney = async ({ id }: { id: string }) => {
+  const newTaskList: Task[] = Array.from({ length: 15 }, (_, index) => ({
+    taskId: index + 1,
+    taskComplete: false,
+    taskAction: taskList[index],
+    taskCompleteNotes: "",
+  })).reverse();
+
+  const picUrl = `${
+    import.meta.env.UNSPLASH_API
+  }/photos/random?query=ocean&orientation=landscape&client_id=${
+    import.meta.env.UNSPLASH_ACCESS_KEY
+  }`;
+  const freshPic = await fetch(picUrl).then((res) => res.json());
+  const newReward: RewardPicture = {
+    blur_hash: freshPic.blur_hash,
+    description: freshPic.description,
+    regUrl: freshPic.urls.regular,
+    smUrl: freshPic.urls.small,
+    dlUrl: freshPic.links.download,
+    creditUrl: freshPic.user.links.html,
+    creditName: freshPic.user.name,
+  };
+
+  return {
+    id: crypto.randomUUID(),
+    userId: id,
+    isActiveJourney: true,
+    tasksCompleted: 0,
+    currentTask: 1,
+    taskList: newTaskList,
+    rewardPic: newReward,
+  };
+};
+
 export const server = {
   createProfile: defineAction({
     accept: "form",
@@ -73,39 +108,7 @@ export const server = {
       if (activeJourney.length > 0) {
         return activeJourney[0];
       } else {
-        const newTaskList: Task[] = Array.from({ length: 15 }, (_, index) => ({
-          taskId: index + 1,
-          taskComplete: false,
-          taskAction: taskList[index],
-          taskCompleteNotes: "",
-        })).reverse();
-
-        const picUrl = `${
-          import.meta.env.UNSPLASH_API
-        }/photos/random?query=ocean&orientation=landscape&client_id=${
-          import.meta.env.UNSPLASH_ACCESS_KEY
-        }`;
-        const freshPic = await fetch(picUrl).then((res) => res.json());
-        const newReward: RewardPicture = {
-          blur_hash: freshPic.blur_hash,
-          description: freshPic.description,
-          regUrl: freshPic.urls.regular,
-          smUrl: freshPic.urls.small,
-          dlUrl: freshPic.links.download,
-          creditUrl: freshPic.user.links.html,
-          creditName: freshPic.user.name,
-        };
-
-        const newJourney = {
-          id: crypto.randomUUID(),
-          userId: id,
-          isActiveJourney: true,
-          tasksCompleted: 0,
-          currentTask: 1,
-          taskList: newTaskList,
-          rewardPic: newReward,
-        };
-
+        const newJourney = await createNewJourney({ id });
         await db.insert(Journeys).values(newJourney);
         return newJourney;
       }
@@ -141,6 +144,24 @@ export const server = {
         code: "NOT_FOUND",
         message: "Journey not found",
       });
+    },
+  }),
+  setNewJourney: defineAction({
+    input: z.object({
+      currentJourney: z.string(),
+      userId: z.string(),
+    }),
+    handler: async ({ currentJourney, userId }) => {
+      await db
+        .update(Journeys)
+        .set({
+          isActiveJourney: false,
+        })
+        .where(eq(Journeys.id, currentJourney));
+
+      const newJourney = await createNewJourney({ id: userId });
+      await db.insert(Journeys).values(newJourney);
+      return newJourney;
     },
   }),
 };

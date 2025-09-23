@@ -2,6 +2,7 @@
 import StarFilled from "@icons/star-filled.svg";
 import { type RewardPicture, type Task, Numbers } from "@utils/types.ts";
 import { actions } from "astro:actions";
+import Button from "./Button.astro";
 import RewardImage from "./RewardImage";
 import TaskCard from "./TaskCard";
 
@@ -21,6 +22,12 @@ const findJobTask = tasks.find(
   (task) => task.taskAction.task === "Find a job to apply for"
 );
 const findJobTaskDone = findJobTask ? findJobTask.taskComplete : false;
+
+// to start a new journey we need to pass the current journey's id and the user id - but we need to convert it from an object to a string so we can parse it properly on the other side
+const newJourneyVars = JSON.stringify({
+  currentJourney: data?.id,
+  userId,
+});
 ---
 
 <section>
@@ -29,6 +36,14 @@ const findJobTaskDone = findJobTask ? findJobTask.taskComplete : false;
       image={reward}
       initialTasksCompleted={data?.tasksCompleted || 0}
       client:load
+    />
+  </div>
+
+  <div class="completed">
+    <Button
+      text="Start a new Journey!"
+      action="setNewJourney"
+      actionVars={newJourneyVars}
     />
   </div>
 
@@ -99,6 +114,15 @@ const findJobTaskDone = findJobTask ? findJobTask.taskComplete : false;
         inline-size: 50cqw;
       }
     }
+  }
+
+  .completed {
+    margin: 2rem auto;
+    block-size: 2.875rem;
+    display: grid;
+    justify-items: center;
+    visibility: hidden;
+    opacity: 0;
   }
 
   .path-wrapper {
@@ -261,4 +285,22 @@ const findJobTaskDone = findJobTask ? findJobTask.taskComplete : false;
   drawPath();
 
   window.addEventListener("resize", drawPath);
+</script>
+
+<script>
+  // toggle the "start a new journey" button based on number of completed tasks
+  import { totalTasksCompleted } from "@stores/taskStore";
+
+  const completedBtn: HTMLDivElement = document.querySelector(
+    ".completed"
+  ) as HTMLDivElement;
+  totalTasksCompleted.subscribe((count) => {
+    if (count === 15) {
+      setTimeout(() => {
+        completedBtn!.style.visibility = "visible";
+        completedBtn!.style.opacity = "1";
+        completedBtn!.style.transition = "opacity 1s ease-out";
+      }, 500);
+    }
+  });
 </script>
