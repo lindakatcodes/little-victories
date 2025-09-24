@@ -28,12 +28,22 @@ const newJourneyVars = JSON.stringify({
   currentJourney: data?.id,
   userId,
 });
+
+// these need to live here since we have access to the env variables securely on the server
+const rewardCredit = `${reward.creditUrl}/?${
+  import.meta.env.UNSPLASH_REFERRER
+}`;
+const rewardSource = `https://unsplash.com/?${
+  import.meta.env.UNSPLASH_REFERRER
+}`;
 ---
 
 <section>
   <div class="reward">
     <RewardImage
       image={reward}
+      imageCredit={rewardCredit}
+      imageSrc={rewardSource}
       initialTasksCompleted={data?.tasksCompleted || 0}
       client:load
     />

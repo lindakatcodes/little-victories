@@ -11,18 +11,20 @@ import { useEffect, useState } from "react";
 
 interface Props {
   image: RewardPicture;
+  imageCredit: string;
+  imageSrc: string;
   initialTasksCompleted: number;
 }
 
-export default function RewardImage({ image, initialTasksCompleted }: Props) {
+export default function RewardImage({
+  image,
+  imageCredit,
+  imageSrc,
+  initialTasksCompleted,
+}: Props) {
   const tasksCompleted = useStore(totalTasksCompleted);
   const [isAnimating, setIsAnimating] = useState(false);
   const [showUnlocked, setShowUnlocked] = useState(false);
-
-  const rewardCredit = `${image.creditUrl}${import.meta.env.UNSPLASH_REFERRER}`;
-  const rewardSource = `https://unsplash.com/${
-    import.meta.env.UNSPLASH_REFERRER
-  }`;
 
   // create an element for the blurred picture when locked
   useEffect(() => {
@@ -91,9 +93,9 @@ export default function RewardImage({ image, initialTasksCompleted }: Props) {
         {showUnlocked ? (
           <>
             <p>Photo by</p>
-            <a href={rewardCredit}>{image.creditName}</a>
+            <a href={imageCredit}>{image.creditName}</a>
             <p>on</p>
-            <a href={rewardSource}>Unsplash</a>
+            <a href={imageSrc}>Unsplash</a>
           </>
         ) : (
           "Complete tasks to unlock!"
