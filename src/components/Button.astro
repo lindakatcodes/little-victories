@@ -2,19 +2,26 @@
 import type { actions } from "astro:actions";
 
 interface Props {
-  text: String;
+  text: string;
   action?: keyof typeof actions;
-  inverseColor?: Boolean;
+  actionVars?: string;
+  inverseColor?: boolean;
   type?: "button" | "submit" | "reset";
 }
 
-const { text, action, inverseColor = false, type = "button" } = Astro.props;
+const {
+  text,
+  action,
+  actionVars,
+  inverseColor = false,
+  type = "button",
+} = Astro.props;
 
 const bgColor = !inverseColor ? "var(--dark-blue)" : "var(--light-blue)";
 const txtColor = !inverseColor ? "var(--light-blue)" : "var(--dark-blue)";
 ---
 
-<action-button data-action={action}>
+<action-button data-action={action} data-action-vars={actionVars}>
   <button type={type}>{text}</button>
 </action-button>
 
@@ -35,13 +42,15 @@ const txtColor = !inverseColor ? "var(--light-blue)" : "var(--dark-blue)";
   class ActionButton extends HTMLElement {
     connectedCallback() {
       const action = this.dataset.action as keyof typeof actions | undefined;
+      const actionVars = this.dataset.actionVars
+        ? JSON.parse(this.dataset.actionVars as string)
+        : {};
       const button = this.querySelector("button");
       button!.addEventListener("click", async () => {
         if (action) {
           try {
             console.log("processing action");
-            const result = await actions[action]({});
-            console.log({ result });
+            await actions[action]({ ...actionVars });
             navigate("/");
           } catch (error) {
             console.error("Action failed:", error);
