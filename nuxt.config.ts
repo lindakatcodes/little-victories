@@ -2,7 +2,7 @@
 export default defineNuxtConfig({
   compatibilityDate: "2025-07-15",
   devtools: { enabled: true },
-  modules: ["@nuxt/fonts", "@nuxt/icon", "@nuxt/image"],
+  modules: ["@nuxt/fonts", "@nuxt/icon", "@nuxt/image", "@pinia/nuxt"],
   app: {
     head: {
       title: "Little Victories",
@@ -12,6 +12,12 @@ export default defineNuxtConfig({
       link: [
         { rel: "icon", type: "image/svg+xml", href: "https://fav.farm/⛵" },
       ],
+    },
+  },
+  runtimeConfig: {
+    turso: {
+      databaseUrl: process.env.NUXT_TURSO_DATABASE_URL,
+      authToken: process.env.NUXT_TURSO_AUTH_TOKEN,
     },
   },
 });
