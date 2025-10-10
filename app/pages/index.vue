@@ -1,6 +1,7 @@
 <template>
   <section>
     <h1>Little Victories</h1>
+    <Pitch />
   </section>
 </template>
 
@@ -9,19 +10,19 @@ section {
   max-inline-size: 95cqw;
   margin: 0 auto;
 
-  @media (width >= 64rem) {
+  @media (width >= 1024px) {
     & {
       max-inline-size: 70cqw;
     }
   }
 
-  @media (width >= 80rem) {
+  @media (width >= 1280px) {
     & {
       max-inline-size: 60cqw;
     }
   }
 
-  @media (width >= 96rem) {
+  @media (width >= 1536px) {
     & {
       max-inline-size: 50cqw;
     }
@@ -31,6 +32,6 @@ section {
 h1 {
   text-align: center;
   margin: 1rem auto;
-  font-weight: 800;
+  font-weight: 700;
 }
 </style>
