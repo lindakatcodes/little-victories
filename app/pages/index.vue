@@ -1,6 +1,7 @@
 <template>
   <section>
     <h1>Little Victories</h1>
+    <Pitch />
   </section>
 </template>
 
