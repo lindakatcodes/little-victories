@@ -1,14 +1,14 @@
 <script setup lang="ts">
+import { useProfileStore } from '~/stores/profile';
+
 const emailError = ref("");
 const name = ref("");
 const email = ref("");
 
+const profileStore = useProfileStore();
+
 async function handleSubmit() {
-  // const { error } = await actions.createProfile(formData);
-  //     if (!error) navigate("/");
-  //     if (error && error.code === "CONFLICT") {
-  //       setEmailError(`* ${error.message}`);
-  //     }
+  await profileStore.createProfile(name.value, email.value);
 }
 </script>
 

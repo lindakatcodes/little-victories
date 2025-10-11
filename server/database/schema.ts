@@ -1,15 +1,15 @@
 import { text, integer, sqliteTable } from "drizzle-orm/sqlite-core";
 import type { Task, RewardPicture } from "../utils/types";
 
-export const profiles = sqliteTable("profiles", {
+export const Profiles = sqliteTable("profiles", {
   id: text().primaryKey(),
   name: text(),
   email: text().unique(),
 });
 
-export const journeys = sqliteTable("journeys", {
+export const Journeys = sqliteTable("journeys", {
   id: text().primaryKey(),
-  userId: text().references(() => profiles.id),
+  userId: text().references(() => Profiles.id),
   taskList: text({ mode: "json" }).$type<Task[]>(),
   rewardPic: text({ mode: "json" }).$type<RewardPicture>(),
   tasksCompleted: integer().default(0),

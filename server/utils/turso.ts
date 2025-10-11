@@ -6,8 +6,7 @@ const { turso } = useRuntimeConfig();
 let clientConfig;
 
 if (process.env.NODE_ENV === "development") {
-  // For local development, use a local SQLite file
-  // Ensure 'local.db' exists in your project root or adjust the path as needed
+  // For local development, use turso dev
   clientConfig = {
     url: "http://127.0.0.1:8080",
   };
