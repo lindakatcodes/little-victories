@@ -1,11 +1,23 @@
 import { defineStore } from "pinia";
 
 export const useProfileStore = defineStore("profile", {
-  state: () => ({}),
+  state: () => ({
+    error: "",
+    loading: false,
+    userData: {
+      name: "",
+      email: "",
+    },
+  }),
   getters: {},
   actions: {
-    async createProfile(name: string, email: string) {
-      // if i want loading or error state, init those here
+    async createProfile(
+      name: string,
+      email: string
+    ): Promise<{ data?: any; error?: string }> {
+      this.loading = true;
+      this.error = "";
+
       try {
         const data = await $fetch("/api/createProfile", {
           method: "POST",
@@ -15,19 +27,16 @@ export const useProfileStore = defineStore("profile", {
           },
         });
 
+        this.userData.name = data[0]!.name as string;
+        this.userData.email = data[0]!.email as string;
+
         return { data };
-        // set any state values here
-      } catch (e) {
-        // do something with the error here
+      } catch (e: any) {
+        this.error = e.data.message;
+        return { error: e.data.message };
       } finally {
-        // if i did a loading state fall, close it here
+        this.loading = false;
       }
     },
   },
 });
-
-// const { error } = await actions.createProfile(formData);
-//     if (!error) navigate("/");
-//     if (error && error.code === "CONFLICT") {
-//       setEmailError(`* ${error.message}`);
-//     }

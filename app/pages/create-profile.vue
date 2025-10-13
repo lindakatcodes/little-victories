@@ -1,20 +1,28 @@
 <script setup lang="ts">
 import { useProfileStore } from '~/stores/profile';
 
-const emailError = ref("");
+const formError = ref("");
 const name = ref("");
 const email = ref("");
 
 const profileStore = useProfileStore();
 
 async function handleSubmit() {
-  await profileStore.createProfile(name.value, email.value);
+  formError.value = "";
+  const { error } = await profileStore.createProfile(name.value, email.value);
+
+  if (!error) {
+    await navigateTo('/');
+  } else {
+    formError.value = error;
+  }
 }
 </script>
 
 <template>
   <h1>Create Your Profile</h1>
   <form @submit.prevent="handleSubmit">
+    <span class="error">{{ formError }}</span>
     <label for="name">
       What would you like to be called?
       <input type="text" id="name" name="name" v-model="name" required />
@@ -22,7 +30,6 @@ async function handleSubmit() {
     <label for="email">
       Your email address
       <input type="email" id="email" name="email" v-model="email" required />
-      <span class="error">{{ emailError }}</span>
     </label>
     <button class="styled-button" type="submit">Create Profile</button>
   </form>
@@ -80,5 +87,6 @@ input {
   font-weight: 600;
   text-decoration: underline wavy var(--seagreen);
   text-underline-offset: 0.375rem;
+  margin-bottom: 0.25rem;
 }
 </style>

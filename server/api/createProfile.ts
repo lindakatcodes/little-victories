@@ -10,14 +10,16 @@ export default defineEventHandler(async (event) => {
   if (!name) {
     throw createError({
       statusCode: 400,
-      statusMessage: "Name is required",
+      statusMessage: "Bad Request",
+      message: "Name is required.",
     });
   }
 
   if (!email) {
     throw createError({
       statusCode: 400,
-      statusMessage: "Email is required",
+      statusMessage: "Bad Request",
+      message: "Email is required.",
     });
   }
 
@@ -28,8 +30,9 @@ export default defineEventHandler(async (event) => {
     .where(eq(Profiles.email, email));
   if (existingEmail.length > 0) {
     throw createError({
-      statusCode: 400,
-      statusMessage: "This email is already in use. Please sign in instead.",
+      statusCode: 409,
+      statusMessage: "Conflict",
+      message: "This email is already in use. Please sign in instead.",
     });
   }
   const newUser = await db
