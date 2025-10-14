@@ -14,6 +14,15 @@ export default defineNuxtConfig({
       ],
     },
   },
+  fonts: {
+    families: [
+      {
+        name: "Plus Jakarta Sans",
+        provider: "fontsource",
+        weight: "400 800",
+      },
+    ],
+  },
   runtimeConfig: {
     turso: {
       databaseUrl: process.env.NUXT_TURSO_DATABASE_URL,
