@@ -42,5 +42,5 @@ export default defineEventHandler(async (event) => {
 
   setCookie(event, "userId", id);
 
-  return newUser;
+  return newUser[0];
 });
