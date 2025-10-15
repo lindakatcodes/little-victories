@@ -39,3 +39,9 @@ export const Numbers: NumbersObject = {
   14: "fourteen",
   15: "fifteen",
 };
+
+export interface UserObject {
+  id: string;
+  name: string;
+  email: string;
+}

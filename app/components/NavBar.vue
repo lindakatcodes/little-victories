@@ -1,9 +1,21 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { useProfileStore } from "~/stores/profile";
+
+const profileStore = useProfileStore();
+await profileStore.getActiveUser();
+</script>
 
 <template>
   <nav>
     <NuxtLink to="/" class="home">Little Victories</NuxtLink>
-    <NuxtLink to="/pick-profile" class="inverse-styled-link">Sign In</NuxtLink>
+    <template v-if="!profileStore.loading">
+      <div v-if="profileStore.activeUser.name">
+        <p>Welcome back, {{ profileStore.activeUser.name }}</p>
+      </div>
+      <NuxtLink v-else to="/pick-profile" class="inverse-styled-link"
+        >Sign In</NuxtLink
+      >
+    </template>
   </nav>
 </template>
 
@@ -21,5 +33,14 @@ nav {
   font-weight: 600;
   font-size: var(--txt-lg);
   text-decoration: none;
+}
+
+div {
+  display: grid;
+  grid-template-columns: 1fr max-content;
+  align-items: center;
+  justify-items: center;
+  gap: 1rem;
+  color: var(--light-blue);
 }
 </style>
