@@ -12,7 +12,6 @@ await profileStore.getActiveUser();
       <div v-if="profileStore.activeUser.name">
         <p>Welcome back, {{ profileStore.activeUser.name }}</p>
       </div>
-      <p v-else-if="profileStore.error">{{ profileStore.error }}</p>
       <NuxtLink v-else to="/pick-profile" class="inverse-styled-link"
         >Sign In</NuxtLink
       >
