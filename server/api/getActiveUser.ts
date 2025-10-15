@@ -3,7 +3,6 @@ import { Profiles } from "../database/schema";
 import { eq } from "drizzle-orm";
 
 export default defineEventHandler(async (event) => {
-  console.log("api: fetching user");
   const userId = getCookie(event, "userId");
   if (!userId) {
     return [];

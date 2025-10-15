@@ -21,7 +21,9 @@ export const useProfileStore = defineStore("profile", {
     async createProfile(
       name: string,
       email: string
-    ): Promise<{ data?: any; error?: string }> {
+    ): Promise<
+      { data: UserObject; error?: never } | { data?: never; error: string }
+    > {
       this.loading = true;
       this.error = "";
 
@@ -47,10 +49,9 @@ export const useProfileStore = defineStore("profile", {
     async getActiveUser() {
       this.loading = true;
       this.error = "";
-      console.log("store: fetching user");
       try {
         const user: UserObject[] = await $fetch("/api/getActiveUser");
-        if (user?.length > 0 && user[0]) {
+        if (user.length > 0 && user[0]) {
           this.activeUser = user[0];
           this.error = "";
         } else {
