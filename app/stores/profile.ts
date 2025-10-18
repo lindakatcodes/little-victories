@@ -68,5 +68,47 @@ export const useProfileStore = defineStore("profile", {
         this.loading = false;
       }
     },
+    async getAllProfiles(): Promise<UserObject[]> {
+      this.loading = true;
+      this.error = "";
+      let allUsers: UserObject[] = [];
+      try {
+        const users: UserObject[] = await $fetch("/api/getAllProfiles");
+        if (users.length > 0) {
+          this.error = "";
+          allUsers = [...users];
+        } else {
+          this.error = "";
+        }
+      } catch (e: any) {
+        this.error = e.data.message;
+      } finally {
+        this.loading = false;
+      }
+
+      return allUsers;
+    },
+    // async login(id: string) {
+    //   this.loading = true;
+    //   this.error = "";
+    //   try {
+    //     const user: UserObject[] = await $fetch("/api/login");
+    //     if (user.length > 0 && user[0]) {
+    //       this.activeUser = user[0];
+    //       this.error = "";
+    //     } else {
+    //       this.activeUser = {
+    //         id: "",
+    //         name: "",
+    //         email: "",
+    //       };
+    //       this.error = "";
+    //     }
+    //   } catch (e: any) {
+    //     this.error = e.data.message;
+    //   } finally {
+    //     this.loading = false;
+    //   }
+    // },
   },
 });

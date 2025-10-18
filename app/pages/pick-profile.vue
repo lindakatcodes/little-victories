@@ -1,16 +1,31 @@
 <script setup lang="ts">
+import { useProfileStore } from "~/stores/profile";
+import type { UserObject } from "~~/server/utils/types";
+
+const profileStore = useProfileStore();
+const allProfiles = await profileStore.getAllProfiles();
+
 const emailQuery = ref("");
-// needs to be a call to get the profiles from the db
-const allProfiles = [];
-const filteredProfiles = ref([]);
+const filteredProfiles = ref<UserObject[]>([]);
 
 function filterProfiles() {
   emailQuery.value.length >= 2
     ? (filteredProfiles.value = allProfiles.filter((profile) => {
-        profile.email.toLowerCase().includes(emailQuery.value.toLowerCase()) ||
-          profile.name.toLowerCase().includes(emailQuery.value.toLowerCase());
+        return (
+          profile.email
+            .toLowerCase()
+            .includes(emailQuery.value.toLowerCase()) ||
+          profile.name.toLowerCase().includes(emailQuery.value.toLowerCase())
+        );
       }))
     : (filteredProfiles.value = []);
+}
+
+async function handleClick(id: string) {
+  // const { error } = await profileStore.login(id);
+  // if (!error) {
+  //   await navigateTo("/");
+  // }
 }
 </script>
 
@@ -24,7 +39,7 @@ function filterProfiles() {
         id="email"
         v-model="emailQuery"
         placeholder="Search by email..."
-        @change="filterProfiles"
+        @input="filterProfiles"
       />
     </form>
     <div class="results">
@@ -34,11 +49,13 @@ function filterProfiles() {
       </p>
 
       <div v-if="filteredProfiles.length >= 1" class="profiles">
-        <!-- button will need @click to handle login w/ the profile id -->
-        <button v-for="profile in filteredProfiles">
-          <p>{profile.name}</p>
+        <button
+          v-for="profile in filteredProfiles"
+          @click="handleClick(profile.id)"
+        >
+          <p>{{ profile.name }}</p>
           <span>|</span>
-          <p>{profile.email}</p>
+          <p>{{ profile.email }}</p>
         </button>
       </div>
 
