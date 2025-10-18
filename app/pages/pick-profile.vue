@@ -22,10 +22,10 @@ function filterProfiles() {
 }
 
 async function handleClick(id: string) {
-  // const { error } = await profileStore.login(id);
-  // if (!error) {
-  //   await navigateTo("/");
-  // }
+  await profileStore.login(id);
+  if (!profileStore.error) {
+    await navigateTo("/");
+  }
 }
 </script>
 
@@ -51,6 +51,7 @@ async function handleClick(id: string) {
       <div v-if="filteredProfiles.length >= 1" class="profiles">
         <button
           v-for="profile in filteredProfiles"
+          class="resultsProfile"
           @click="handleClick(profile.id)"
         >
           <p>{{ profile.name }}</p>

@@ -88,27 +88,30 @@ export const useProfileStore = defineStore("profile", {
 
       return allUsers;
     },
-    // async login(id: string) {
-    //   this.loading = true;
-    //   this.error = "";
-    //   try {
-    //     const user: UserObject[] = await $fetch("/api/login");
-    //     if (user.length > 0 && user[0]) {
-    //       this.activeUser = user[0];
-    //       this.error = "";
-    //     } else {
-    //       this.activeUser = {
-    //         id: "",
-    //         name: "",
-    //         email: "",
-    //       };
-    //       this.error = "";
-    //     }
-    //   } catch (e: any) {
-    //     this.error = e.data.message;
-    //   } finally {
-    //     this.loading = false;
-    //   }
-    // },
+    async login(id: string) {
+      this.loading = true;
+      this.error = "";
+      try {
+        const user: UserObject[] = await $fetch("/api/login", {
+          method: "POST",
+          body: { id },
+        });
+        if (user.length > 0 && user[0]) {
+          this.activeUser = user[0];
+          this.error = "";
+        } else {
+          this.activeUser = {
+            id: "",
+            name: "",
+            email: "",
+          };
+          this.error = "";
+        }
+      } catch (e: any) {
+        this.error = e.data.message;
+      } finally {
+        this.loading = false;
+      }
+    },
   },
 });
