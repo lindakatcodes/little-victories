@@ -113,5 +113,21 @@ export const useProfileStore = defineStore("profile", {
         this.loading = false;
       }
     },
+    async logout() {
+      this.loading = true;
+      this.error = "";
+      try {
+        await $fetch("/api/logout");
+        this.activeUser = {
+          id: "",
+          name: "",
+          email: "",
+        };
+      } catch (e: any) {
+        this.error = e.data.message;
+      } finally {
+        this.loading = false;
+      }
+    },
   },
 });
