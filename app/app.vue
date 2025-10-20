@@ -49,4 +49,12 @@ main {
   border-radius: 0.25rem;
   font-weight: 500;
 }
+
+.inverse-styled-button {
+  padding: 0.5rem 0.75rem;
+  background-color: var(--light-blue);
+  color: var(--dark-blue);
+  border-radius: 0.25rem;
+  font-weight: 500;
+}
 </style>
