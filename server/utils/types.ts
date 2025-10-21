@@ -1,3 +1,9 @@
+export interface UserObject {
+  id: string;
+  name: string;
+  email: string;
+}
+
 export interface Task {
   taskId: number;
   taskAction: {
@@ -16,6 +22,15 @@ export interface RewardPicture {
   dlUrl: string;
   creditUrl: string;
   creditName: string;
+}
+
+export interface Journey {
+  id: string;
+  userId: string;
+  isActiveJourney: boolean;
+  tasksCompleted: number;
+  taskList: Task[];
+  rewardPic: RewardPicture;
 }
 
 interface NumbersObject {
@@ -39,9 +54,3 @@ export const Numbers: NumbersObject = {
   14: "fourteen",
   15: "fifteen",
 };
-
-export interface UserObject {
-  id: string;
-  name: string;
-  email: string;
-}

@@ -2,7 +2,7 @@
 import { useProfileStore } from '~/stores/profile';
 
 const profileStore = useProfileStore();
-const activeUser = !!profileStore.activeUser.name;
+const activeUser = profileStore.activeUser.name !== "";
 </script>
 
 <template>
