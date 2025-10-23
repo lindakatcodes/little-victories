@@ -2,13 +2,12 @@
 import { useProfileStore } from '~/stores/profile';
 
 const profileStore = useProfileStore();
-const activeUser = profileStore.activeUser.name !== "";
 </script>
 
 <template>
   <section>
     <h1>Little Victories</h1>
-    <Journey v-if="activeUser" />
+    <Journey v-if="profileStore.isLoggedIn" />
     <Pitch v-else />
   </section>
 </template>

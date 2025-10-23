@@ -1,3 +1,8 @@
+<script setup lang="ts">
+  const profileStore = useProfileStore();
+  await callOnce(profileStore.getActiveUser);
+</script>
+
 <template>
   <main>
     <NavBar />

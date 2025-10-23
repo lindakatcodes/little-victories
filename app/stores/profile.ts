@@ -17,6 +17,9 @@ export const useProfileStore = defineStore("profile", {
       email: "",
     },
   }),
+  getters: {
+    isLoggedIn: (state) => state.activeUser.id !== "",
+  },
   actions: {
     async createProfile(
       name: string,
@@ -50,9 +53,13 @@ export const useProfileStore = defineStore("profile", {
       this.loading = true;
       this.error = "";
       try {
-        const user: UserObject[] = await $fetch("/api/getActiveUser");
-        if (user.length > 0 && user[0]) {
-          this.activeUser = user[0];
+        const { data: user } = await useFetch("/api/getActiveUser");
+        if (user.value?.[0]) {
+          this.activeUser = {
+            id: user.value[0].id,
+            name: user.value[0].name!,
+            email: user.value[0].email!,
+          };
           this.error = "";
         } else {
           this.activeUser = {
