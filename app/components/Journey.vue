@@ -1,30 +1,29 @@
 <script setup lang="ts">
 import { useJourneyStore } from "~/stores/journey";
-// import { type RewardPicture, type Task, Numbers } from "@utils/types.ts";
+import { type RewardPicture, type Task, Numbers } from "~/../server/utils/types";
 
 const journeyStore = useJourneyStore();
 await journeyStore.getActiveJourney();
 
-// const rewardCredit = `${reward.creditUrl}/?${
-//   import.meta.env.UNSPLASH_REFERRER
-// }`;
-// const rewardSource = `https://unsplash.com/?${
-//   import.meta.env.UNSPLASH_REFERRER
-// }`;
+const reward = journeyStore.currentJourney.rewardPic;
+
+const rewardCredit = `${reward.creditUrl}/?${
+  process.env.UNSPLASH_REFERRER
+}`;
+const rewardSource = `https://unsplash.com/?${
+  process.env.UNSPLASH_REFERRER
+}`;
 </script>
 
 <template>
   <section>
     <div class="reward">
-      <!-- <RewardImage
-        image="{reward}"
-        imageCredit="{rewardCredit}"
-        imageSrc="{rewardSource}"
-        initialTasksCompleted="{data?.tasksCompleted"
-        ||
-        0}
-        client:load
-      /> -->
+      <RewardImage
+        :image="reward"
+        :imageCredit="rewardCredit"
+        :imageSrc="rewardSource"
+        :initialTasksCompleted="journeyStore.tasksCompleted"
+      />
     </div>
 
     <div class="completed">
