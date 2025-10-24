@@ -3,6 +3,8 @@ import { useJourneyStore } from "~/stores/journey";
 // import { type RewardPicture, type Task, Numbers } from "@utils/types.ts";
 
 const journeyStore = useJourneyStore();
+await journeyStore.getActiveJourney();
+
 // const rewardCredit = `${reward.creditUrl}/?${
 //   import.meta.env.UNSPLASH_REFERRER
 // }`;

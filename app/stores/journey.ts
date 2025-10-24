@@ -1,32 +1,40 @@
 import { defineStore } from "pinia";
-import type { Journey } from "~~/server/utils/types";
+import type { Journey, RewardPicture } from "~~/server/utils/types";
 
 interface JourneyState {
   journeyError: string;
   journeyLoading: boolean;
-  tasksCompleted: number;
-  currentJourneyId: string;
+  currentJourney: Journey;
 }
 
 export const useJourneyStore = defineStore("journey", {
   state: (): JourneyState => ({
     journeyError: "",
     journeyLoading: false,
-    tasksCompleted: 0,
-    currentJourneyId: "",
+    currentJourney: {
+      id: "",
+      userId: "",
+      isActiveJourney: false,
+      tasksCompleted: 0,
+      taskList: [],
+      rewardPic: {} as RewardPicture,
+    },
   }),
+  getters: {
+    tasksCompleted: (state) => state.journey.tasksCompleted,
+  },
   actions: {
     async getActiveJourney() {
       this.journeyLoading = true;
       this.journeyError = "";
       try {
-        const currentJourney = await $fetch<Journey>("/api/getActiveJourney");
-        if (currentJourney) {
-          this.tasksCompleted = currentJourney.tasksCompleted;
-          this.currentJourneyId = currentJourney.id;
+        const { data } = await useFetch<Journey>("/api/getActiveJourney");
+        if (data.value) {
+          this.journey = data.value;
         }
-      } catch (err: any) {
-        this.journeyError = err.data.message;
+      } catch (e: any) {
+        this.journeyError =
+          e.data?.message ?? "An error without a specific message occurred.";
       } finally {
         this.journeyLoading = false;
       }
