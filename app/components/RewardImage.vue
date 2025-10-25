@@ -3,6 +3,8 @@ import ClosedLock from "~/assets/icons/lock.svg";
 import OpenLock from "~/assets/icons/open-lock.svg";
 import type { RewardPicture } from "~~/server/utils/types";
 import { decode } from "blurhash";
+import { useJourneyStore } from "~/stores/journey";
+import { onMounted } from "vue";
 
 const props = defineProps<{
   image: RewardPicture;
@@ -10,31 +12,30 @@ const props = defineProps<{
   imageSrc: string;
   initialTasksCompleted: number;
 }>();
+
 const journeyStore = useJourneyStore();
 const isAnimating = useState("isAnimating", () => false);
 const showUnlocked = useState("showUnlocked", () => false);
 
-// need a way to run a function once the component has loaded, since it needs browser details
+const lockedReward = ref<HTMLCanvasElement | null>(null);
+
+const buildImage = () => {
+  const canvas = lockedReward.value;
+  if (!canvas) return;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return;
+  const hash = canvas.dataset.blurhash || "";
+
+  const pixels = decode(hash, 48, 32);
+
+  const imageData = ctx!.createImageData(48, 32);
+  imageData.data.set(pixels);
+  ctx.putImageData(imageData, 0, 0);
+};
+
+onMounted(() => buildImage());
 
 // need a watcher ?? or similar to update my state values when the right number of tasks are complete - maybe those need to be computed values and set in the store instead? except once needs to be delayed
-
-//   // create an element for the blurred picture when locked
-//   useEffect(() => {
-//     const buildImage = () => {
-//       const canvas = document.querySelector(
-//         "#locked-reward"
-//         ) as HTMLCanvasElement;
-//         const ctx = canvas!.getContext("2d");
-//         const hash = canvas.dataset.blurhash || "";
-
-//         const pixels = decode(hash, 48, 32);
-
-//         const imageData = ctx!.createImageData(48, 32);
-//         imageData.data.set(pixels);
-//         ctx!.putImageData(imageData, 0, 0);
-//       };
-//       buildImage();
-//     }, []);
 
 //     // watches for all tasks to be complete to trigger a reward animation
 //     useEffect(() => {

@@ -5,7 +5,7 @@ import { type RewardPicture, type Task, Numbers } from "~/../server/utils/types"
 const journeyStore = useJourneyStore();
 await journeyStore.getActiveJourney();
 
-const reward = journeyStore.currentJourney.rewardPic;
+const reward: RewardPicture = journeyStore.currentJourney.rewardPic;
 
 const rewardCredit = `${reward.creditUrl}/?${
   process.env.UNSPLASH_REFERRER
