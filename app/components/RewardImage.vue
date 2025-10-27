@@ -6,7 +6,7 @@ import { decode } from "blurhash";
 import { useJourneyStore } from "~/stores/journey";
 import { onMounted } from "vue";
 
-const props = defineProps<{
+defineProps<{
   image: RewardPicture;
   imageCredit: string;
   imageSrc: string;
@@ -33,7 +33,7 @@ const buildImage = () => {
   ctx.putImageData(imageData, 0, 0);
 };
 
-// onMounted(() => buildImage());
+onMounted(() => buildImage());
 
 // need a watcher ?? or similar to update my state values when the right number of tasks are complete - maybe those need to be computed values and set in the store instead? except once needs to be delayed
 
@@ -51,9 +51,9 @@ const buildImage = () => {
 <template>
   <figure>
     <div class="figImage">
-      <!-- <canvas
+      <canvas
         v-if="!showUnlocked || isAnimating"
-        id="locked-reward"
+        ref="lockedReward"
         :data-blurhash="image.blur_hash"
         width="48"
         height="32"
@@ -64,16 +64,16 @@ const buildImage = () => {
         :src="image.smUrl"
         :alt="image.description"
         :class="{ isAnimating: 'fadeIn' }"
-      /> -->
-      <!-- <div
+      />
+      <div
         v-if="!showUnlocked || isAnimating"
         class="lock"
-        :class="{ isAnimating: 'unlockAnimation' }"
+        :class="{ unlockAnimation: isAnimating }"
       >
         <OpenLock v-if="isAnimating" />
         <ClosedLock v-else />
         <p>{{ `${journeyStore.tasksCompleted}/15 tasks` }}</p>
-      </div> -->
+      </div>
     </div>
     <figcaption>
       <template v-if="showUnlocked">
@@ -123,6 +123,7 @@ canvas {
 
   & svg {
     width: 3rem;
+    height: 3rem;
   }
 }
 
