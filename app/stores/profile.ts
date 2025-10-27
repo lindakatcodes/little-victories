@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import type { UserObject } from "~~/server/utils/types";
+import { useJourneyStore } from "./journey";
 
 interface ProfileState {
   profileError: string;
@@ -96,12 +97,12 @@ export const useProfileStore = defineStore("profile", {
       this.profileLoading = true;
       this.profileError = "";
       try {
-        const { data } = await useFetch<UserObject[]>("/api/login", {
+        const data = await $fetch<UserObject[]>("/api/login", {
           method: "POST",
           body: { id },
         });
-        if (data.value?.[0]) {
-          this.activeUser = data.value[0];
+        if (data?.[0]) {
+          this.activeUser = data[0];
         } else {
           this.activeUser = {
             id: "",
@@ -120,12 +121,14 @@ export const useProfileStore = defineStore("profile", {
       this.profileLoading = true;
       this.profileError = "";
       try {
-        await useFetch("/api/logout");
+        await $fetch("/api/logout");
         this.activeUser = {
           id: "",
           name: "",
           email: "",
         };
+        const journeyStore = useJourneyStore();
+        journeyStore.$reset();
       } catch (e: any) {
         this.profileError =
           e.data?.message ?? "An error without a specific message occurred.";

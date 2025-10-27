@@ -3,7 +3,7 @@ import { useJourneyStore } from "~/stores/journey";
 import { type RewardPicture, type Task, Numbers } from "~/../server/utils/types";
 
 const journeyStore = useJourneyStore();
-await journeyStore.getActiveJourney();
+await callOnce('journey', () => journeyStore.getActiveJourney(), { mode: 'navigation' })
 
 const reward: RewardPicture = journeyStore.currentJourney.rewardPic;
 

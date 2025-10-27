@@ -5,7 +5,7 @@ const profileStore = useProfileStore();
 
 async function handleClick() {
   await profileStore.logout();
-  if (!profileStore.error) {
+  if (!profileStore.profileError) {
     await navigateTo("/");
   }
 }

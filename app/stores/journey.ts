@@ -21,7 +21,7 @@ export const useJourneyStore = defineStore("journey", {
     },
   }),
   getters: {
-    tasksCompleted: (state) => state.journey.tasksCompleted,
+    tasksCompleted: (state) => state.currentJourney.tasksCompleted,
   },
   actions: {
     async getActiveJourney() {
@@ -30,7 +30,7 @@ export const useJourneyStore = defineStore("journey", {
       try {
         const { data } = await useFetch<Journey>("/api/getActiveJourney");
         if (data.value) {
-          this.journey = data.value;
+          this.currentJourney = data.value;
         }
       } catch (e: any) {
         this.journeyError =
