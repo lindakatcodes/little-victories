@@ -13,6 +13,13 @@ const rewardCredit = `${reward.creditUrl}/?${
 const rewardSource = `https://unsplash.com/?${
   process.env.UNSPLASH_REFERRER
 }`;
+
+async function handleClick() {
+  const {error} = await journeyStore.createNewJourney(journeyStore.currentJourney.id);
+  if (!error) {
+    reloadNuxtApp();
+  }
+}
 </script>
 
 <template>
@@ -26,12 +33,10 @@ const rewardSource = `https://unsplash.com/?${
       />
     </div>
 
-    <div class="completed">
-      <!-- <Button
-        text="Start a new Journey!"
-        action="setNewJourney"
-        actionVars="{newJourneyVars}"
-      /> -->
+    <div class="completed" :class="{'completed-show': journeyStore.journeyCompleted}" v-if="journeyStore.journeyCompleted">
+      <button class="styled-button" @click="handleClick" type="button">
+        Start a new Journey!
+      </button>
     </div>
 
     <div class="path-wrapper">
@@ -115,6 +120,12 @@ section {
   justify-items: center;
   visibility: hidden;
   opacity: 0;
+  transition: opacity 1s ease-out;
+}
+
+.completed-show {
+  visibility: visible;
+  opacity: 1;
 }
 
 .path-wrapper {

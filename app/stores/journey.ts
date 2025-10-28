@@ -22,6 +22,7 @@ export const useJourneyStore = defineStore("journey", {
   }),
   getters: {
     tasksCompleted: (state) => state.currentJourney.tasksCompleted,
+    journeyCompleted: (state) => state.currentJourney.tasksCompleted === 15,
   },
   actions: {
     async getActiveJourney() {
@@ -35,6 +36,34 @@ export const useJourneyStore = defineStore("journey", {
       } catch (e: any) {
         this.journeyError =
           e.data?.message ?? "An error without a specific message occurred.";
+      } finally {
+        this.journeyLoading = false;
+      }
+    },
+    async createNewJourney(
+      currentJourneyId: string
+    ): Promise<
+      { data: Journey; error?: never } | { data?: never; error: string }
+    > {
+      this.journeyLoading = true;
+      this.journeyError = "";
+      try {
+        const data = await $fetch<Journey>("/api/createNewJourney", {
+          method: "POST",
+          body: {
+            currentJourneyId,
+          },
+        });
+        if (data) {
+          this.currentJourney = data;
+          return { data };
+        }
+        throw new Error("Failed to create a new journey.");
+      } catch (e: any) {
+        this.journeyError =
+          e.data?.message ??
+          "An error happened while trying to create a new journey.";
+        return { error: this.journeyError };
       } finally {
         this.journeyLoading = false;
       }
