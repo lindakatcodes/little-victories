@@ -4,9 +4,9 @@ import OpenLock from "~/assets/icons/open-lock.svg";
 import type { RewardPicture } from "~~/server/utils/types";
 import { decode } from "blurhash";
 import { useJourneyStore } from "~/stores/journey";
-import { onMounted } from "vue";
+import { onMounted, watch } from "vue";
 
-defineProps<{
+const props = defineProps<{
   image: RewardPicture;
   imageCredit: string;
   imageSrc: string;
@@ -14,38 +14,37 @@ defineProps<{
 }>();
 
 const journeyStore = useJourneyStore();
-const isAnimating = useState("isAnimating", () => false);
-const showUnlocked = useState("showUnlocked", () => false);
+const isAnimating = ref(false);
+const showUnlocked = ref(false);
 
 const lockedReward = ref<HTMLCanvasElement | null>(null);
+
+const blurredHash = decode(props.image.blur_hash, 48, 32);
 
 const buildImage = () => {
   const canvas = lockedReward.value;
   if (!canvas) return;
   const ctx = canvas.getContext("2d");
   if (!ctx) return;
-  const hash = canvas.dataset.blurhash || "";
-  console.log(canvas, ctx, hash)
-  const pixels = decode(hash, 48, 32);
 
   const imageData = ctx.createImageData(48, 32);
-  imageData.data.set(pixels);
+  imageData.data.set(blurredHash);
   ctx.putImageData(imageData, 0, 0);
 };
 
-onMounted(() => buildImage());
+onMounted(() => {
+  buildImage();
+  showUnlocked.value = journeyStore.tasksCompleted === 15;
+});
 
-// need a watcher ?? or similar to update my state values when the right number of tasks are complete - maybe those need to be computed values and set in the store instead? except once needs to be delayed
-
-//     // watches for all tasks to be complete to trigger a reward animation
-//     useEffect(() => {
-//       if (tasksCompleted === 15) {
-//       setIsAnimating(true);
-//       setTimeout(() => {
-//         setShowUnlocked(true);
-//       }, 800);
-//     }
-//   }, [tasksCompleted]);
+watch(() => journeyStore.tasksCompleted, (updatedCount) => {
+  if (updatedCount === 15) {
+    isAnimating.value = true;
+    setTimeout(() => {
+      showUnlocked.value = true;
+    }, 800)
+  }
+}, {immediate: true})
 </script>
 
 <template>
@@ -57,13 +56,13 @@ onMounted(() => buildImage());
         :data-blurhash="image.blur_hash"
         width="48"
         height="32"
-        :class="{ isAnimating: 'fadeOut' }"
+        :class="{ fadeOUt: isAnimating }"
       />
       <img
         v-if="showUnlocked || isAnimating"
         :src="image.smUrl"
         :alt="image.description"
-        :class="{ isAnimating: 'fadeIn' }"
+        :class="{ fadeIn: isAnimating }"
       />
       <div
         v-if="!showUnlocked || isAnimating"
