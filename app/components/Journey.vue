@@ -6,6 +6,7 @@ const journeyStore = useJourneyStore();
 await callOnce('journey', () => journeyStore.getActiveJourney(), { mode: 'navigation' })
 
 const reward: RewardPicture = journeyStore.currentJourney.rewardPic;
+const taskList: Task[] = journeyStore.currentJourney.taskList;
 
 const rewardCredit = `${reward.creditUrl}/?${
   process.env.UNSPLASH_REFERRER
@@ -41,6 +42,11 @@ async function handleClick() {
 
     <div class="path-wrapper">
       <!-- <canvas class="path-canvas"></canvas> -->
+      <div class="path-tiles">
+        <div v-for="task in taskList" class="tile" :class="Numbers[task.taskId]">
+          <TaskCard :task="task" :journeyId="journeyStore.currentJourney.id" />
+        </div>
+      </div>
       <!-- <div class="path-tiles">
         { tasks.map((task) => (
         <div class:list="{[`tile" ${Numbers[task.taskId]}`]}>
