@@ -3,15 +3,17 @@ import type { Task, RewardPicture } from "../utils/types";
 
 export const Profiles = sqliteTable("profiles", {
   id: text().primaryKey(),
-  name: text(),
-  email: text().unique(),
+  name: text().notNull(),
+  email: text().unique().notNull(),
 });
 
 export const Journeys = sqliteTable("journeys", {
   id: text().primaryKey(),
-  userId: text().references(() => Profiles.id),
-  taskList: text({ mode: "json" }).$type<Task[]>(),
-  rewardPic: text({ mode: "json" }).$type<RewardPicture>(),
-  tasksCompleted: integer().default(0),
-  isActiveJourney: integer({ mode: "boolean" }),
+  userId: text()
+    .references(() => Profiles.id)
+    .notNull(),
+  taskList: text({ mode: "json" }).$type<Task[]>().notNull(),
+  rewardPic: text({ mode: "json" }).$type<RewardPicture>().notNull(),
+  tasksCompleted: integer().default(0).notNull(),
+  isActiveJourney: integer({ mode: "boolean" }).notNull(),
 });

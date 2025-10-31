@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const props = defineProps<{
-  task: Task;
+  taskId: number;
   journeyId: string;
 }>();
 
@@ -10,10 +10,22 @@ const detailsDialog = useTemplateRef("detailsDialog");
 const completionDialog = useTemplateRef("completionDialog");
 const completedDescription = ref("");
 
+const currentTask = computed(() => {
+  const task = journeyStore.currentJourney.taskList.find(
+    (t) => t.taskId === props.taskId
+  );
+  
+  if (!task) {
+    throw new Error(`Task with id ${props.taskId} not found`);
+  }
+  
+  return task;
+}) satisfies ComputedRef<Task>;
+
 const allowCompletion = computed(() => {
-  if (!props.task.taskAction.hasPrereq) return true;
+  if (!currentTask.value?.taskAction?.hasPrereq) return true;
   return journeyStore.findRoleTaskStatus;
-})
+});
 
 function openDetailsDialog() {
   if (detailsDialog.value) detailsDialog.value.showModal();
@@ -32,19 +44,34 @@ function closeCompleteDialog() {
   if (completionDialog.value) completionDialog.value.close();
 }
 
-function handleTaskCompletion() {}
+async function handleTaskCompletion() {
+  const updatedTask = {
+    ...currentTask.value,
+    taskComplete: true,
+    taskCompleteNotes: completedDescription.value,
+  };
+
+  const { error } = await journeyStore.completeTask({
+    task: updatedTask,
+    journeyId: props.journeyId,
+  });
+
+  if (!error) {
+    if (completionDialog.value) completionDialog.value.close();
+  }
+}
 </script>
 
 <template>
   <div class="taskWrapper">
     <button
-      v-if="!task.taskComplete"
+      v-if="!currentTask.taskComplete"
       class="openBtn"
       @click="openDetailsDialog"
       type="button"
     >
-      <p>{{ task.taskId }}</p>
-      <p>{{ task.taskAction.task }}</p>
+      <p>{{ currentTask.taskId }}</p>
+      <p>{{ currentTask.taskAction.task }}</p>
     </button>
     <div v-else class="completed">
       <SvgoStarFilled />
@@ -56,7 +83,7 @@ function handleTaskCompletion() {}
       <button type="button" class="closeBtn" @click="closeDetailsDialog">
         Close
       </button>
-      <p>{{ task.taskAction.tip }}</p>
+      <p>{{ currentTask.taskAction.tip }}</p>
       <button
         type="button"
         class="doneBtn"

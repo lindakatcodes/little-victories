@@ -72,5 +72,40 @@ export const useJourneyStore = defineStore("journey", {
         this.journeyLoading = false;
       }
     },
+    async completeTask({
+      task,
+      journeyId,
+    }: {
+      task: Task;
+      journeyId: string;
+    }): Promise<
+      { data: Task[]; error?: never } | { data?: never; error: string }
+    > {
+      this.journeyLoading = true;
+      this.journeyError = "";
+      try {
+        const data = await $fetch<Task[]>("/api/setTaskCompletion", {
+          method: "POST",
+          body: {
+            task,
+            journeyId,
+          },
+        });
+        if (data) {
+          this.currentJourney.taskList = data;
+          this.currentJourney.tasksCompleted =
+            this.currentJourney.tasksCompleted + 1;
+          return { data };
+        }
+        throw new Error("Failed to mark the task as complete.");
+      } catch (e: any) {
+        this.journeyError =
+          e.data?.message ??
+          "An error happened while trying to mark a task as complete.";
+        return { error: this.journeyError };
+      } finally {
+        this.journeyLoading = false;
+      }
+    },
   },
 });

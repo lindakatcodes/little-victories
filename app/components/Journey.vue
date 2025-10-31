@@ -1,22 +1,28 @@
 <script setup lang="ts">
 import { useJourneyStore } from "~/stores/journey";
-import { type RewardPicture, type Task, Numbers } from "~/../server/utils/types";
+import {
+  type RewardPicture,
+  type Task,
+  Numbers,
+} from "~/../server/utils/types";
 
 const journeyStore = useJourneyStore();
-await callOnce('journey', () => journeyStore.getActiveJourney(), { mode: 'navigation' })
+await callOnce("journey", () => journeyStore.getActiveJourney(), {
+  mode: "navigation",
+});
 
 const reward: RewardPicture = journeyStore.currentJourney.rewardPic;
-const taskList: Task[] = journeyStore.currentJourney.taskList;
+const taskList = computed<Task[]>(() => {
+  return journeyStore.currentJourney?.taskList || [];
+});
 
-const rewardCredit = `${reward.creditUrl}/?${
-  process.env.UNSPLASH_REFERRER
-}`;
-const rewardSource = `https://unsplash.com/?${
-  process.env.UNSPLASH_REFERRER
-}`;
+const rewardCredit = `${reward.creditUrl}/?${process.env.UNSPLASH_REFERRER}`;
+const rewardSource = `https://unsplash.com/?${process.env.UNSPLASH_REFERRER}`;
 
 async function handleClick() {
-  const {error} = await journeyStore.createNewJourney(journeyStore.currentJourney.id);
+  const { error } = await journeyStore.createNewJourney(
+    journeyStore.currentJourney.id
+  );
   if (!error) {
     reloadNuxtApp();
   }
@@ -34,7 +40,11 @@ async function handleClick() {
       />
     </div>
 
-    <div class="completed" :class="{'completed-show': journeyStore.journeyCompleted}" v-if="journeyStore.journeyCompleted">
+    <div
+      class="completed"
+      :class="{ 'completed-show': journeyStore.journeyCompleted }"
+      v-if="journeyStore.journeyCompleted"
+    >
       <button class="styled-button" @click="handleClick" type="button">
         Start a new Journey!
       </button>
@@ -42,9 +52,21 @@ async function handleClick() {
 
     <div class="path-wrapper">
       <!-- <canvas class="path-canvas"></canvas> -->
-      <div class="path-tiles">
-        <div v-for="task in taskList" class="tile" :class="Numbers[task.taskId]">
-          <TaskCard :task="task" :journeyId="journeyStore.currentJourney.id" />
+      <div
+        class="path-tiles"
+        v-if="
+          journeyStore.currentJourney && journeyStore.currentJourney.taskList
+        "
+      >
+        <div
+          v-for="task in taskList"
+          class="tile"
+          :class="Numbers[task.taskId]"
+        >
+          <TaskCard
+            :taskId="task.taskId"
+            :journeyId="journeyStore.currentJourney.id"
+          />
         </div>
       </div>
     </div>
