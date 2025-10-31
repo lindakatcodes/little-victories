@@ -2,12 +2,18 @@
 const props = defineProps<{
   task: Task;
   journeyId: string;
-  findJobTaskStatus: boolean;
 }>();
+
+const journeyStore = useJourneyStore();
 
 const detailsDialog = useTemplateRef("detailsDialog");
 const completionDialog = useTemplateRef("completionDialog");
 const completedDescription = ref("");
+
+const allowCompletion = computed(() => {
+  if (!props.task.taskAction.hasPrereq) return true;
+  return journeyStore.findRoleTaskStatus;
+})
 
 function openDetailsDialog() {
   if (detailsDialog.value) detailsDialog.value.showModal();
@@ -26,7 +32,7 @@ function closeCompleteDialog() {
   if (completionDialog.value) completionDialog.value.close();
 }
 
-function handleCompletion() {}
+function handleTaskCompletion() {}
 </script>
 
 <template>
@@ -51,7 +57,12 @@ function handleCompletion() {}
         Close
       </button>
       <p>{{ task.taskAction.tip }}</p>
-      <button type="button" class="doneBtn" @click="openCompleteDialog">
+      <button
+        type="button"
+        class="doneBtn"
+        @click="openCompleteDialog"
+        :disabled="!allowCompletion"
+      >
         Completed!
       </button>
     </div>
@@ -69,7 +80,7 @@ function handleCompletion() {}
       <button
         type="submit"
         class="doneBtn"
-        @click.prevent="handleCompletion"
+        @click.prevent="handleTaskCompletion"
         :disabled="completedDescription === ''"
       >
         Save note & complete

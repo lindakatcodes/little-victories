@@ -8,11 +8,6 @@ await callOnce('journey', () => journeyStore.getActiveJourney(), { mode: 'naviga
 const reward: RewardPicture = journeyStore.currentJourney.rewardPic;
 const taskList: Task[] = journeyStore.currentJourney.taskList;
 
-const findJobTask = taskList.find(
-  (task) => task.taskAction.task === "Find a job to apply for"
-);
-const jobTaskCompleted = findJobTask ? findJobTask.taskComplete : false;
-
 const rewardCredit = `${reward.creditUrl}/?${
   process.env.UNSPLASH_REFERRER
 }`;
@@ -49,7 +44,7 @@ async function handleClick() {
       <!-- <canvas class="path-canvas"></canvas> -->
       <div class="path-tiles">
         <div v-for="task in taskList" class="tile" :class="Numbers[task.taskId]">
-          <TaskCard :task="task" :journeyId="journeyStore.currentJourney.id" :findJobTaskStatus="jobTaskCompleted" />
+          <TaskCard :task="task" :journeyId="journeyStore.currentJourney.id" />
         </div>
       </div>
     </div>

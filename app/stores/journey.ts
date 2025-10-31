@@ -23,6 +23,10 @@ export const useJourneyStore = defineStore("journey", {
   getters: {
     tasksCompleted: (state) => state.currentJourney.tasksCompleted,
     journeyCompleted: (state) => state.currentJourney.tasksCompleted === 15,
+    findRoleTaskStatus: (state) =>
+      state.currentJourney.taskList.find(
+        (task) => task.taskAction.task === "Find a job to apply for"
+      )?.taskComplete ?? false,
   },
   actions: {
     async getActiveJourney() {

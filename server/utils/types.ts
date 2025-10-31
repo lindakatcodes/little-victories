@@ -9,6 +9,7 @@ export interface Task {
   taskAction: {
     task: string;
     tip: string;
+    hasPrereq: boolean;
   };
   taskComplete: boolean;
   taskCompleteNotes: string;
