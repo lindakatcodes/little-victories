@@ -2,6 +2,7 @@
 const props = defineProps<{
   task: Task;
   journeyId: string;
+  findJobTaskStatus: boolean;
 }>();
 
 const detailsDialog = useTemplateRef("detailsDialog");
@@ -176,6 +177,7 @@ dialog {
 
   & svg {
     inline-size: 2.5rem;
+    block-size: 2.5rem;
     color: var(--light-blue);
   }
 }
