@@ -14,11 +14,11 @@ const currentTask = computed(() => {
   const task = journeyStore.currentJourney.taskList.find(
     (t) => t.taskId === props.taskId
   );
-  
+
   if (!task) {
     throw new Error(`Task with id ${props.taskId} not found`);
   }
-  
+
   return task;
 }) satisfies ComputedRef<Task>;
 
@@ -83,6 +83,9 @@ async function handleTaskCompletion() {
       <button type="button" class="closeBtn" @click="closeDetailsDialog">
         Close
       </button>
+      <p v-if="currentTask.taskAction.hasPrereq">
+        NOTE: This task can only be completed after you've done the 'Find a role to apply for' task!
+      </p>
       <p>{{ currentTask.taskAction.tip }}</p>
       <button
         type="button"

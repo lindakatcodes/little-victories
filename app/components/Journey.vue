@@ -6,6 +6,9 @@ import {
   Numbers,
 } from "~/../server/utils/types";
 
+const canvasRef = ref<HTMLCanvasElement | null>(null);
+const pathRef = ref<HTMLElement | null>(null);
+
 const journeyStore = useJourneyStore();
 await callOnce("journey", () => journeyStore.getActiveJourney(), {
   mode: "navigation",
@@ -27,6 +30,55 @@ async function handleClick() {
     reloadNuxtApp();
   }
 }
+
+function drawPath() {
+  const canvas = canvasRef.value;
+  const path = pathRef.value;
+  const tiles = path?.querySelectorAll(".tile");
+
+  if (!canvas || !path || !tiles) return;
+
+  // Match canvas size to path container
+  canvas.width = path.offsetWidth;
+  canvas.height = path.offsetHeight;
+
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return;
+
+  ctx.strokeStyle = "var(--dark-blue)";
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+
+  // Connect tiles in sequence
+  Array.from(tiles)
+    .reverse()
+    .forEach((tile, i) => {
+      const rect = tile.getBoundingClientRect();
+      const pathRect = path.getBoundingClientRect();
+
+      // Convert to canvas coordinates
+      const x = rect.left - pathRect.left + rect.width / 2;
+      const y = rect.top - pathRect.top + rect.height / 2;
+
+      if (i === 0) {
+        ctx.moveTo(x, y);
+      } else {
+        ctx.lineTo(x, y);
+      }
+    });
+
+  ctx.stroke();
+}
+
+const debouncedDrawPath = useDebounceFn(drawPath, 100);
+
+onMounted(() => {
+  nextTick(() => {
+    drawPath()
+  })
+
+  useEventListener(window, 'resize', debouncedDrawPath);
+})
 </script>
 
 <template>
@@ -51,8 +103,9 @@ async function handleClick() {
     </div>
 
     <div class="path-wrapper">
-      <!-- <canvas class="path-canvas"></canvas> -->
+      <canvas ref="canvasRef" class="path-canvas"></canvas>
       <div
+        ref="pathRef"
         class="path-tiles"
         v-if="
           journeyStore.currentJourney && journeyStore.currentJourney.taskList
