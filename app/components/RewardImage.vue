@@ -1,10 +1,5 @@
 <script setup lang="ts">
-import ClosedLock from "~/assets/icons/lock.svg";
-import OpenLock from "~/assets/icons/open-lock.svg";
-import type { RewardPicture } from "~~/server/utils/types";
 import { decode } from "blurhash";
-import { useJourneyStore } from "~/stores/journey";
-import { onMounted, watch } from "vue";
 
 const props = defineProps<{
   image: RewardPicture;
@@ -69,8 +64,8 @@ watch(() => journeyStore.tasksCompleted, (updatedCount) => {
         class="lock"
         :class="{ unlockAnimation: isAnimating }"
       >
-        <OpenLock v-if="isAnimating" />
-        <ClosedLock v-else />
+        <SvgoOpenLock v-if="isAnimating" />
+        <SvgoClosedLock v-else />
         <p>{{ `${journeyStore.tasksCompleted}/15 tasks` }}</p>
       </div>
     </div>

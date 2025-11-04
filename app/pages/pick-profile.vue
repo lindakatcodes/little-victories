@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import { useProfileStore } from "~/stores/profile";
-import type { UserObject } from "~~/server/utils/types";
-
 const profileStore = useProfileStore();
 const allProfiles = await profileStore.getAllProfiles();
 
@@ -23,7 +20,7 @@ function filterProfiles() {
 
 async function handleClick(id: string) {
   await profileStore.login(id);
-  if (!profileStore.error) {
+  if (!profileStore.profileError) {
     await navigateTo("/");
   }
 }

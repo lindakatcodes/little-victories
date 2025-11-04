@@ -1,10 +1,5 @@
 <script setup lang="ts">
-import { useJourneyStore } from "~/stores/journey";
-import {
-  type RewardPicture,
-  type Task,
-  Numbers,
-} from "~/../server/utils/types";
+import { Numbers } from "~/../server/utils/types";
 
 const canvasRef = ref<HTMLCanvasElement | null>(null);
 const pathRef = ref<HTMLElement | null>(null);
@@ -74,11 +69,11 @@ const debouncedDrawPath = useDebounceFn(drawPath, 100);
 
 onMounted(() => {
   nextTick(() => {
-    drawPath()
-  })
+    drawPath();
+  });
 
-  useEventListener(window, 'resize', debouncedDrawPath);
-})
+  useEventListener(window, "resize", debouncedDrawPath);
+});
 </script>
 
 <template>

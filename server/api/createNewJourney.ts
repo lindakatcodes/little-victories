@@ -1,6 +1,6 @@
 import { db } from "../utils/turso";
 import { Journeys } from "../database/schema";
-import { eq, and } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { createJourney } from "../utils/createJourney";
 
 export default defineEventHandler(async (event) => {
