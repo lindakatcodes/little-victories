@@ -1,22 +1,26 @@
 import { defineStore } from "pinia";
 import type { UserObject } from "~~/server/utils/types";
+import { useJourneyStore } from "./journey";
 
 interface ProfileState {
-  error: string;
-  loading: boolean;
+  profileError: string;
+  profileLoading: boolean;
   activeUser: UserObject;
 }
 
 export const useProfileStore = defineStore("profile", {
   state: (): ProfileState => ({
-    error: "",
-    loading: false,
+    profileError: "",
+    profileLoading: false,
     activeUser: {
       id: "",
       name: "",
       email: "",
     },
   }),
+  getters: {
+    isLoggedIn: (state) => state.activeUser.id !== "",
+  },
   actions: {
     async createProfile(
       name: string,
@@ -24,11 +28,11 @@ export const useProfileStore = defineStore("profile", {
     ): Promise<
       { data: UserObject; error?: never } | { data?: never; error: string }
     > {
-      this.loading = true;
-      this.error = "";
+      this.profileLoading = true;
+      this.profileError = "";
 
       try {
-        const data: UserObject = await $fetch("/api/createProfile", {
+        const { data } = await useFetch<UserObject>("/api/createProfile", {
           method: "POST",
           body: {
             name,
@@ -36,86 +40,86 @@ export const useProfileStore = defineStore("profile", {
           },
         });
 
-        this.activeUser = data;
-
-        return { data };
+        if (data.value) {
+          this.activeUser = data.value;
+          return { data: data.value };
+        }
+        throw new Error("Failed to create a profile.");
       } catch (e: any) {
-        this.error = e.data.message;
-        return { error: e.data.message };
+        this.profileError =
+          e.data?.message ?? "An error without a specific message occurred.";
+        return { error: this.profileError };
       } finally {
-        this.loading = false;
+        this.profileLoading = false;
       }
     },
     async getActiveUser() {
-      this.loading = true;
-      this.error = "";
+      this.profileLoading = true;
+      this.profileError = "";
       try {
-        const user: UserObject[] = await $fetch("/api/getActiveUser");
-        if (user.length > 0 && user[0]) {
-          this.activeUser = user[0];
-          this.error = "";
+        const { data } = await useFetch<UserObject[]>("/api/getActiveUser");
+        if (data.value?.[0]) {
+          const user = data.value[0];
+          this.activeUser = {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+          };
         } else {
           this.activeUser = {
             id: "",
             name: "",
             email: "",
           };
-          this.error = "";
         }
       } catch (e: any) {
-        this.error = e.data.message;
+        this.profileError =
+          e.data?.message ?? "An error without a specific message occurred.";
       } finally {
-        this.loading = false;
+        this.profileLoading = false;
       }
     },
     async getAllProfiles(): Promise<UserObject[]> {
-      this.loading = true;
-      this.error = "";
-      let allUsers: UserObject[] = [];
+      this.profileLoading = true;
+      this.profileError = "";
       try {
-        const users: UserObject[] = await $fetch("/api/getAllProfiles");
-        if (users.length > 0) {
-          this.error = "";
-          allUsers = [...users];
-        } else {
-          this.error = "";
-        }
+        const { data } = await useFetch<UserObject[]>("/api/getAllProfiles");
+        return data.value ?? [];
       } catch (e: any) {
-        this.error = e.data.message;
+        this.profileError =
+          e.data?.message ?? "An error without a specific message occurred.";
+        return [];
       } finally {
-        this.loading = false;
+        this.profileLoading = false;
       }
-
-      return allUsers;
     },
     async login(id: string) {
-      this.loading = true;
-      this.error = "";
+      this.profileLoading = true;
+      this.profileError = "";
       try {
-        const user: UserObject[] = await $fetch("/api/login", {
+        const data = await $fetch<UserObject[]>("/api/login", {
           method: "POST",
           body: { id },
         });
-        if (user.length > 0 && user[0]) {
-          this.activeUser = user[0];
-          this.error = "";
+        if (data?.[0]) {
+          this.activeUser = data[0];
         } else {
           this.activeUser = {
             id: "",
             name: "",
             email: "",
           };
-          this.error = "";
         }
       } catch (e: any) {
-        this.error = e.data.message;
+        this.profileError =
+          e.data?.message ?? "An error without a specific message occurred.";
       } finally {
-        this.loading = false;
+        this.profileLoading = false;
       }
     },
     async logout() {
-      this.loading = true;
-      this.error = "";
+      this.profileLoading = true;
+      this.profileError = "";
       try {
         await $fetch("/api/logout");
         this.activeUser = {
@@ -123,10 +127,13 @@ export const useProfileStore = defineStore("profile", {
           name: "",
           email: "",
         };
+        const journeyStore = useJourneyStore();
+        journeyStore.$reset();
       } catch (e: any) {
-        this.error = e.data.message;
+        this.profileError =
+          e.data?.message ?? "An error without a specific message occurred.";
       } finally {
-        this.loading = false;
+        this.profileLoading = false;
       }
     },
   },

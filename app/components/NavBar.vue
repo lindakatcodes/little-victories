@@ -2,11 +2,10 @@
 import { useProfileStore } from "~/stores/profile";
 
 const profileStore = useProfileStore();
-await profileStore.getActiveUser();
 
 async function handleClick() {
   await profileStore.logout();
-  if (!profileStore.error) {
+  if (!profileStore.profileError) {
     await navigateTo("/");
   }
 }
@@ -15,15 +14,15 @@ async function handleClick() {
 <template>
   <nav>
     <NuxtLink to="/" class="home">Little Victories</NuxtLink>
-    <template v-if="!profileStore.loading">
-      <div v-if="profileStore.activeUser.name">
-        <p>Welcome back, {{ profileStore.activeUser.name }}</p>
-        <button class="inverse-styled-button" @click="handleClick">Sign Out</button>
-      </div>
-      <NuxtLink v-else to="/pick-profile" class="inverse-styled-link"
-        >Sign In</NuxtLink
-      >
-    </template>
+    <div v-if="profileStore.isLoggedIn">
+      <p>Welcome back, {{ profileStore.activeUser.name }}</p>
+      <button class="inverse-styled-button" @click="handleClick">
+        Sign Out
+      </button>
+    </div>
+    <NuxtLink v-else to="/pick-profile" class="inverse-styled-link"
+      >Sign In</NuxtLink
+    >
   </nav>
 </template>
 

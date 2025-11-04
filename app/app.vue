@@ -1,3 +1,8 @@
+<script setup lang="ts">
+  const profileStore = useProfileStore();
+  await callOnce('profile', () => profileStore.getActiveUser(), { mode: 'navigation' })
+</script>
+
 <template>
   <main>
     <NavBar />

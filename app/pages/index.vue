@@ -1,7 +1,14 @@
+<script setup lang="ts">
+import { useProfileStore } from '~/stores/profile';
+
+const profileStore = useProfileStore();
+</script>
+
 <template>
   <section>
     <h1>Little Victories</h1>
-    <Pitch />
+    <Journey v-if="profileStore.isLoggedIn" />
+    <Pitch v-else />
   </section>
 </template>
 
