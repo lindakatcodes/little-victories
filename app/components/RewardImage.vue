@@ -53,7 +53,7 @@ watch(() => journeyStore.tasksCompleted, (updatedCount) => {
         height="32"
         :class="{ fadeOUt: isAnimating }"
       />
-      <img
+      <NuxtImg
         v-if="showUnlocked || isAnimating"
         :src="image.smUrl"
         :alt="image.description"
