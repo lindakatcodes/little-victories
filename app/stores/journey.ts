@@ -33,13 +33,27 @@ export const useJourneyStore = defineStore("journey", {
       this.journeyLoading = true;
       this.journeyError = "";
       try {
-        const { data } = await useFetch<Journey>("/api/getActiveJourney");
+        const { data } = await useFetch<{
+          status: string;
+          journey: Journey | null;
+        }>("/api/getActiveJourney");
+
         if (data.value) {
-          this.currentJourney = data.value;
+          // handle no active journey case first
+          if (data.value.status === "No active journey") {
+            const newJourney = await this.createNewJourney("");
+            if (newJourney.error) {
+              this.journeyError = newJourney.error;
+            } else if (newJourney.data) {
+              this.currentJourney = newJourney.data;
+            }
+          } else if (data.value.journey) {
+            this.currentJourney = data.value.journey;
+          }
         }
       } catch (e: any) {
         this.journeyError =
-          e.data?.message ?? "An error without a specific message occurred.";
+          e.data?.message ?? "An error occurred while fetching your journey.";
       } finally {
         this.journeyLoading = false;
       }
