@@ -7,7 +7,7 @@ export const createJourney = async ({ id }: { id: string }) => {
     taskComplete: false,
     taskAction: taskList[index],
     taskCompleteNotes: "",
-  })).reverse();
+  }));
 
   const picUrl = `${process.env.UNSPLASH_API}/photos/random?query=ocean&orientation=landscape&client_id=${process.env.UNSPLASH_ACCESS_KEY}`;
   const freshPic = await fetch(picUrl).then((res) => res.json());

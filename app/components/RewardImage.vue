@@ -43,14 +43,14 @@ watch(() => props.image, () => {
 }, { immediate: true });
 
 watch(() => journeyStore.tasksCompleted, (updatedCount, prevCount) => {
-  if (updatedCount === 15) {
+  if (updatedCount >= 15) {
     isAnimating.value = true;
     setTimeout(() => {
       isAnimating.value = false;
     }, 800)
   }
 
-  if (prevCount === 15 && updatedCount === 0) {
+  if (typeof prevCount !== 'undefined' && prevCount >= 15 && updatedCount === 0) {
     isAnimating.value = false;
     nextTick(() => {
       buildImage();
