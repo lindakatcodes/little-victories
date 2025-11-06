@@ -19,11 +19,8 @@ const lockedReward = ref<HTMLCanvasElement | null>(null);
 // this is computed so when the hash changes it will recalculate
 const blurredHash = computed(() => decode(props.image.blur_hash, 48, 32));
 
-const rewardCredit = new URL(journeyStore.currentJourney.rewardPic.creditUrl);
-rewardCredit.searchParams.append(config.public.UNSPLASH_REFERRER, '');
-
-const rewardSource = new URL('https://unsplash.com');
-rewardSource.searchParams.append(config.public.UNSPLASH_REFERRER, '');
+const rewardCredit = `${journeyStore.currentJourney.rewardPic.creditUrl}/?${config.public.UNSPLASH_REFERRER}`;
+const rewardSource = `https://unsplash.com/?${config.public.UNSPLASH_REFERRER}`;
 
 const buildImage = () => {
   const canvas = lockedReward.value;
@@ -75,7 +72,7 @@ onBeforeUnmount(() => {isAnimating.value = false})
         height="32"
         :class="{ fadeOut: isAnimating }"
       />
-      <NuxtImg
+      <img
         v-if="showUnlocked || isAnimating"
         :src="image.smUrl"
         :alt="image.description"
