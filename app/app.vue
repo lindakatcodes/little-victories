@@ -27,39 +27,4 @@ main {
   container: main / inline-size;
   inline-size: 100%;
 }
-
-/* shared styles throughout the app */
-.styled-link {
-  padding: 0.5rem 0.75rem;
-  background-color: var(--dark-blue);
-  color: var(--light-blue);
-  border-radius: 0.25rem;
-  font-weight: 500;
-  text-decoration: none;
-}
-
-.inverse-styled-link {
-  padding: 0.5rem 0.75rem;
-  background-color: var(--light-blue);
-  color: var(--dark-blue);
-  border-radius: 0.25rem;
-  font-weight: 500;
-  text-decoration: none;
-}
-
-.styled-button {
-  padding: 0.5rem 0.75rem;
-  background-color: var(--dark-blue);
-  color: var(--light-blue);
-  border-radius: 0.25rem;
-  font-weight: 500;
-}
-
-.inverse-styled-button {
-  padding: 0.5rem 0.75rem;
-  background-color: var(--light-blue);
-  color: var(--dark-blue);
-  border-radius: 0.25rem;
-  font-weight: 500;
-}
 </style>
