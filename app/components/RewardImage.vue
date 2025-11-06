@@ -3,18 +3,24 @@ import { decode } from "blurhash";
 
 const props = defineProps<{
   image: RewardPicture;
-  imageCredit: string;
-  imageSrc: string;
   initialTasksCompleted: number;
 }>();
 
 const journeyStore = useJourneyStore();
+const config = useRuntimeConfig();
+
 const isAnimating = ref(false);
-const showUnlocked = ref(false);
+const showUnlocked = computed(() => {
+  return journeyStore.journeyCompleted;
+});
 
 const lockedReward = ref<HTMLCanvasElement | null>(null);
 
-const blurredHash = decode(props.image.blur_hash, 48, 32);
+// this is computed so when the hash changes it will recalculate
+const blurredHash = computed(() => decode(props.image.blur_hash, 48, 32));
+
+const rewardCredit = `${journeyStore.currentJourney.rewardPic.creditUrl}/?${config.public.UNSPLASH_REFERRER}`;
+const rewardSource = `https://unsplash.com/?${config.public.UNSPLASH_REFERRER}`;
 
 const buildImage = () => {
   const canvas = lockedReward.value;
@@ -23,35 +29,48 @@ const buildImage = () => {
   if (!ctx) return;
 
   const imageData = ctx.createImageData(48, 32);
-  imageData.data.set(blurredHash);
+  imageData.data.set(blurredHash.value);
   ctx.putImageData(imageData, 0, 0);
 };
 
 onMounted(() => {
   buildImage();
-  showUnlocked.value = journeyStore.tasksCompleted === 15;
 });
 
-watch(() => journeyStore.tasksCompleted, (updatedCount) => {
+// a watch directly for the image to change, so we get the new one when a new journey starts
+watch(() => props.image, () => {
+  buildImage();
+}, { immediate: true });
+
+watch(() => journeyStore.tasksCompleted, (updatedCount, prevCount) => {
   if (updatedCount === 15) {
     isAnimating.value = true;
     setTimeout(() => {
-      showUnlocked.value = true;
+      isAnimating.value = false;
     }, 800)
   }
+
+  if (prevCount === 15 && updatedCount === 0) {
+    isAnimating.value = false;
+    nextTick(() => {
+      buildImage();
+    })
+  }
 }, {immediate: true})
+
+onBeforeUnmount(() => {isAnimating.value = false})
 </script>
 
 <template>
   <figure>
     <div class="figImage">
       <canvas
-        v-if="!showUnlocked || isAnimating"
+        v-if="!showUnlocked"
         ref="lockedReward"
         :data-blurhash="image.blur_hash"
         width="48"
         height="32"
-        :class="{ fadeOUt: isAnimating }"
+        :class="{ fadeOut: isAnimating }"
       />
       <NuxtImg
         v-if="showUnlocked || isAnimating"
@@ -72,9 +91,9 @@ watch(() => journeyStore.tasksCompleted, (updatedCount) => {
     <figcaption>
       <template v-if="showUnlocked">
         <p>Photo by</p>
-        <a :href="imageCredit">{{ image.creditName }}</a>
+        <a :href="rewardCredit">{{ image.creditName }}</a>
         <p>on</p>
-        <a :href="imageSrc">Unsplash</a>
+        <a :href="rewardSource">Unsplash</a>
       </template>
       <template v-else>Complete tasks to unlock!</template>
     </figcaption>

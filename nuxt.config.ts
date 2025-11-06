@@ -19,5 +19,8 @@ export default defineNuxtConfig({
       databaseUrl: process.env.NUXT_TURSO_DATABASE_URL,
       authToken: process.env.NUXT_TURSO_AUTH_TOKEN,
     },
+    public: {
+      UNSPLASH_REFERRER: process.env.UNSPLASH_REFERRER,
+    },
   },
 });

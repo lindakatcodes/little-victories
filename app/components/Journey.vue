@@ -7,21 +7,12 @@ await callOnce("journey", () => journeyStore.getActiveJourney(), {
   mode: "navigation",
 });
 
-const reward: RewardPicture = journeyStore.currentJourney.rewardPic;
 const taskList = computed<Task[]>(() => {
   return journeyStore.currentJourney?.taskList || [];
 });
 
-const rewardCredit = `${reward.creditUrl}/?${process.env.UNSPLASH_REFERRER}`;
-const rewardSource = `https://unsplash.com/?${process.env.UNSPLASH_REFERRER}`;
-
 async function handleNewJourneyClick() {
-  const { error } = await journeyStore.createNewJourney(
-    journeyStore.currentJourney.id
-  );
-  if (!error) {
-    reloadNuxtApp();
-  }
+  await journeyStore.createNewJourney(journeyStore.currentJourney.id);
 }
 
 // creates the connecting line between task cards
@@ -78,25 +69,25 @@ onMounted(() => {
 const getTilePosition = (index: number) => {
   const startColumn = 1;
   const columnPatternLength = 6; // 1-2-3-4-3-2 for the zigzag pattern
-  
+
   // Calculate row from bottom up
   const row = taskList.value.length - index;
-  
+
   // Get position within the column pattern
   const position = index % columnPatternLength;
 
   // default to the beginning, then adjust based on where we are in the zigzag
   let column = startColumn;
-  
+
   if (position < 4) {
     column = startColumn + position;
   } else {
     column = startColumn + (columnPatternLength - position);
   }
-  
+
   return {
     gridColumn: `${column} / span 2`,
-    gridRow: row
+    gridRow: row,
   };
 };
 </script>
@@ -105,9 +96,7 @@ const getTilePosition = (index: number) => {
   <section>
     <div class="reward">
       <RewardImage
-        :image="reward"
-        :imageCredit="rewardCredit"
-        :imageSrc="rewardSource"
+        :image="journeyStore.currentJourney.rewardPic"
         :initialTasksCompleted="journeyStore.tasksCompleted"
       />
     </div>
@@ -117,20 +106,18 @@ const getTilePosition = (index: number) => {
       :class="{ 'completed-show': journeyStore.journeyCompleted }"
       v-if="journeyStore.journeyCompleted"
     >
-      <button class="styled-button" @click="handleNewJourneyClick" type="button">
+      <button
+        class="styled-button"
+        @click="handleNewJourneyClick"
+        type="button"
+      >
         Start a new Journey!
       </button>
     </div>
 
     <div class="path-wrapper">
       <canvas ref="canvasRef" class="path-canvas"></canvas>
-      <div
-        ref="pathRef"
-        class="path-tiles"
-        v-if="
-          journeyStore.currentJourney && journeyStore.currentJourney.taskList
-        "
-      >
+      <div ref="pathRef" class="path-tiles" v-if="journeyStore.currentJourney">
         <div
           v-for="(task, index) in taskList"
           class="tile"
