@@ -79,12 +79,19 @@ export const useJourneyStore = defineStore("journey", {
       task: Task;
       journeyId: string;
     }): Promise<
-      { data: Task[]; error?: never } | { data?: never; error: string }
+      | {
+          data: { updatedTaskList: Task[]; updatedTasksCompleted: number };
+          error?: never;
+        }
+      | { data?: never; error: string }
     > {
       this.journeyLoading = true;
       this.journeyError = "";
       try {
-        const data = await $fetch<Task[]>("/api/setTaskCompletion", {
+        const data = await $fetch<{
+          updatedTaskList: Task[];
+          updatedTasksCompleted: number;
+        }>("/api/setTaskCompletion", {
           method: "POST",
           body: {
             task,
@@ -92,9 +99,9 @@ export const useJourneyStore = defineStore("journey", {
           },
         });
         if (data) {
-          this.currentJourney.taskList = data;
-          this.currentJourney.tasksCompleted =
-            this.currentJourney.tasksCompleted + 1;
+          console.log({ data });
+          this.currentJourney.taskList = data.updatedTaskList;
+          this.currentJourney.tasksCompleted = data.updatedTasksCompleted;
           return { data };
         }
         throw new Error("Failed to mark the task as complete.");
