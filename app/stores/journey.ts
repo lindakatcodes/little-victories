@@ -113,7 +113,6 @@ export const useJourneyStore = defineStore("journey", {
           },
         });
         if (data) {
-          console.log({ data });
           this.currentJourney.taskList = data.updatedTaskList;
           this.currentJourney.tasksCompleted = data.updatedTasksCompleted;
           return { data };
