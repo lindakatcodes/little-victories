@@ -1,6 +1,6 @@
 import { db } from "../utils/turso";
 import { Journeys } from "../database/schema";
-import { eq, and } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { createJourney } from "../utils/createJourney";
 
 export default defineEventHandler(async (event) => {
@@ -15,20 +15,16 @@ export default defineEventHandler(async (event) => {
       message: "No user id found in local cookies.",
     });
   }
-  if (!currentJourneyId) {
-    throw createError({
-      statusCode: 400,
-      statusMessage: "Bad Request",
-      message:
-        "No current journey id provided, this is needed to complete the current journey.",
-    });
+
+  // only update if there's an existing current journey
+  if (currentJourneyId) {
+    await db
+      .update(Journeys)
+      .set({
+        isActiveJourney: false,
+      })
+      .where(eq(Journeys.id, currentJourneyId));
   }
-  await db
-    .update(Journeys)
-    .set({
-      isActiveJourney: false,
-    })
-    .where(eq(Journeys.id, currentJourneyId));
 
   const newJourney = await createJourney({ id: userId });
   await db.insert(Journeys).values(newJourney);

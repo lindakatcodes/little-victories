@@ -1,7 +1,6 @@
 import { db } from "../utils/turso";
 import { Journeys } from "../database/schema";
 import { eq, and } from "drizzle-orm";
-import { createJourney } from "../utils/createJourney";
 
 export default defineEventHandler(async (event) => {
   const userId = getCookie(event, "userId");
@@ -19,10 +18,14 @@ export default defineEventHandler(async (event) => {
       and(eq(Journeys.userId, userId), eq(Journeys.isActiveJourney, true))
     );
   if (activeJourney.length > 0) {
-    return activeJourney[0];
+    return {
+      status: "Success",
+      journey: activeJourney[0],
+    };
   } else {
-    const newJourney = await createJourney({ id: userId });
-    await db.insert(Journeys).values(newJourney);
-    return newJourney;
+    return {
+      status: "No active journey",
+      journey: null,
+    };
   }
 });

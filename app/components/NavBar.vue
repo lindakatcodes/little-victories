@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { useProfileStore } from "~/stores/profile";
-
 const profileStore = useProfileStore();
 
 async function handleClick() {

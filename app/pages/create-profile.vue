@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { useProfileStore } from '~/stores/profile';
-
 const formError = ref("");
 const name = ref("");
 const email = ref("");

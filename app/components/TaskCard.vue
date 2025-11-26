@@ -84,8 +84,9 @@ async function handleTaskCompletion() {
         Close
       </button>
       <p v-if="currentTask.taskAction.hasPrereq">
-        NOTE: This task can only be completed after you've done the 'Find a role to apply for' task!
+        <em>NOTE: This task can only be completed after you've done the 'Find a role to apply for' task!</em>
       </p>
+      <p>Goal: {{ currentTask.taskAction.goal }}</p>
       <p>{{ currentTask.taskAction.tip }}</p>
       <button
         type="button"

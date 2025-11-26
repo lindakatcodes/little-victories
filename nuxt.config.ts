@@ -2,7 +2,7 @@
 export default defineNuxtConfig({
   compatibilityDate: "2025-07-15",
   devtools: { enabled: true },
-  modules: ["@nuxt/fonts", "@nuxt/image", "@pinia/nuxt", "nuxt-svgo", "@vueuse/nuxt"],
+  modules: ["@pinia/nuxt", "nuxt-svgo", "@vueuse/nuxt"],
   app: {
     head: {
       title: "Little Victories",
@@ -14,19 +14,13 @@ export default defineNuxtConfig({
       ],
     },
   },
-  fonts: {
-    families: [
-      {
-        name: "Plus Jakarta Sans",
-        provider: "fontsource",
-        weight: "400 800",
-      },
-    ],
-  },
   runtimeConfig: {
     turso: {
       databaseUrl: process.env.NUXT_TURSO_DATABASE_URL,
       authToken: process.env.NUXT_TURSO_AUTH_TOKEN,
+    },
+    public: {
+      UNSPLASH_REFERRER: process.env.UNSPLASH_REFERRER,
     },
   },
 });

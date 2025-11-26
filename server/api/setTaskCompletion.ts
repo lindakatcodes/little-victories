@@ -41,15 +41,16 @@ export default defineEventHandler(async (event) => {
     const updatedTaskList: Task[] = journey.taskList.map((existingTask: Task) =>
       existingTask.taskId === task.taskId ? task : existingTask
     );
+    const updatedTasksCompleted = journey.tasksCompleted + 1;
 
     await db
       .update(Journeys)
       .set({
         taskList: updatedTaskList,
-        tasksCompleted: journey.tasksCompleted + 1,
+        tasksCompleted: updatedTasksCompleted,
       })
       .where(eq(Journeys.id, journeyId));
 
-    return updatedTaskList;
+    return { updatedTaskList, updatedTasksCompleted };
   }
 });
