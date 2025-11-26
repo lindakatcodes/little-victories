@@ -1,0 +1,92 @@
+export const taskList = [
+  {
+    task: "Connect with a current contact",
+    tip: "Keep your connections warm! Find one person you haven't talked with in a little while and see how they're doing, let them know you're thinking of them, or support them with something they're sharing online.",
+    goal: "1 message sent",
+    hasPrereq: false,
+  },
+  {
+    task: "Practice your intro",
+    tip: "'Tell me about yourself' will come up all the time. Practice speaking yours out loud and/or deciding what you want to say when people ask.",
+    goal: "5-10 minutes",
+    hasPrereq: false,
+  },
+  {
+    task: "Resume story practice",
+    tip: "If it's on your resume, it's free game to be asked about in an interview. Pick one bullet point and practice talking about it. Using the STAR method is great for this - tell the story of this point by talking through the situation, the task you were given, what action you took to solve it, and the result you got. Share what makes this worth being on your resume and the value you bring. Practice saying it out loud if you've already got the storyline written.",
+    goal: "15-30 minutes",
+    hasPrereq: false,
+  },
+  {
+    task: "Follow up on an application",
+    tip: "You applied for a role recently - if they haven't already reached out, send a message to refresh yourself in their memory. When you do, make sure to include in your message a point on why you're a great fit for the role!",
+    goal: "1 message sent",
+    hasPrereq: false,
+  },
+  {
+    task: "Find a job to apply for",
+    tip: "Time to find a role you're interested in! Track down one job posting that sounds interesting to you. Remember that you don't have to meet all of the requirements to be a good fit! If you can meet at least half of them and have an interest in who they are, what they're doing, or what you'd be doing in the role, it's worth it to apply.",
+    goal: "1 role found",
+    hasPrereq: false,
+  },
+  {
+    task: "Do company research",
+    tip: "Now that you've got a role to apply for, it's time to learn more about this company. Check their website for an about or values page to see what's important to them. Check for social media pages and see what they're sharing. Take notes on anything that comes up often, especially if you can see how it aligns with skills and/or values you have.",
+    goal: "15 minutes",
+    hasPrereq: true,
+  },
+  {
+    task: "List 3 ways you're the best pick",
+    tip: "Look through the job description and find three specific points that match with your experience. Write a sentence for each point that highlights how your skills match it - create a story you can share with them on what makes you a great fit for this role. Make sure to check what the application will require too - sometimes there's specific questions they want you to fill out, this is a great time to find your answers for those.",
+    goal: "30 minutes",
+    hasPrereq: true,
+  },
+  {
+    task: "Find a contact person",
+    tip: "You're probably going to need to reach out to someone about this application to follow up - who will that be? Find some contact info for someone involved with hiring for this role or company, or at least someone in the people division of the company that can point you in the right direction. Save this information somewhere so when you need it, you'll have it.",
+    goal: "1 contact found",
+    hasPrereq: true,
+  },
+  {
+    task: "Do the application",
+    tip: "Time to send in your application! Use the work you've done on researching the company and finding your fit and make sure to highlight those points when filling out the application. If they don't have any specific questions in the application to explain how awesome you'd be, include a cover letter detailing those points for them.",
+    goal: "1 application sent",
+    hasPrereq: true,
+  },
+  {
+    task: "Interview question practice",
+    tip: "Practice your answer to a common behavior question you might get in an interview. There are lots of lists out there to choose a question from, or make your own! This should be something other than the things you've already covered from your intro and resume, like how you handle stress or a time you faced a hard problem. Use the STAR method and save your answer to practice again later.",
+    goal: "15-30 minutes",
+    hasPrereq: false,
+  },
+  {
+    task: "Skill building",
+    tip: "Find a video/podcast/book/etc. for a skill you'd like to learn or improve at, and watch/read it. If you can't get through it all in one sitting that's completely fine - just pick it up again next time. Write yourself a note on what you learned from this so you can see your knowledge growing.",
+    goal: "30 minutes",
+    hasPrereq: false,
+  },
+  {
+    task: "Interview code practice",
+    tip: "Gotta keep those skills sharp! Do a short, bite sized coding problem. This could be something like LeetCode or a tightly scoped design problem. It should be something you might expect to see in an interview. Practice timing yourself or explaining your thought process out loud to yourself so when you do this in a real interview you can be confident in your process!",
+    goal: "30 minutes",
+    hasPrereq: false,
+  },
+  {
+    task: "Build something",
+    tip: "Do you have a side project you're working on? A tool you wish would exist that you could build? Build it! If you don't have the time or interest for a full project, review some PRs for open source projects you like, voice dictate some pseudo code on your commute for an idea, or use an LLM agent to help you create something. Anything to keep your working skills sharp within a project context.",
+    goal: "30 minutes",
+    hasPrereq: false,
+  },
+  {
+    task: "Make a LinkedIn post",
+    tip: "Share something you learned from your practices this week - an interesting tidbit, a problem you solved, something you learned about yourself. Showcase that you're actively working on keeping your skills sharp, learning new ones, and staying active within your community however you can. What interested you from the things you did this round?",
+    goal: "1 post made",
+    hasPrereq: false,
+  },
+  {
+    task: "Leave 3 detailed comments",
+    tip: "Check your LinkedIn feed and leave 3 comments on others' posts. Make sure the comment you're leaving is meaningful - don't just say 'nice job', point out what you love about it, something it makes you think of, a question you have for them. Add some value and show that you're actually paying attention to what they wrote.",
+    goal: "3 comments written",
+    hasPrereq: false,
+  },
+];
