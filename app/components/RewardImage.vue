@@ -19,7 +19,7 @@ const lockedReward = ref<HTMLCanvasElement | null>(null);
 // this is computed so when the hash changes it will recalculate
 const blurredHash = computed(() => decode(props.image.blur_hash, 48, 32));
 
-const rewardCredit = `${journeyStore.currentJourney.rewardPic.creditUrl}/?${config.public.UNSPLASH_REFERRER}`;
+const rewardCredit = computed(() => `${journeyStore.currentJourney.rewardPic.creditUrl}/?${config.public.UNSPLASH_REFERRER}`);
 const rewardSource = `https://unsplash.com/?${config.public.UNSPLASH_REFERRER}`;
 
 const buildImage = () => {
