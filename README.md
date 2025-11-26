@@ -35,13 +35,13 @@ This app is my solution to that. A short-ish list of things to do that are recom
 
 The name of the app (and the inspiration for the color and picture themes) comes from a song by [Matt Nathanson called "Little Victories"](https://www.youtube.com/watch?v=xNxpWx0TotY). This song has been a constant balm for my soul since I first heard it, reminding me that life won't always be perfect, but I can still learn to get by on those little victories and be ok.
 
-> This time I'll be sailing
-> No more bailing boats for me
-> I'll be out here on the sea
-> Just my confidence and me
-> And I'll be awful sometimes
-> Weakened to my knees
-> But I'll learn to get by
+> This time I'll be sailing  
+> No more bailing boats for me  
+> I'll be out here on the sea  
+> Just my confidence and me  
+> And I'll be awful sometimes  
+> Weakened to my knees  
+> But I'll learn to get by  
 > On the little victories
 
 ## Running it locally
