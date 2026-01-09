@@ -5,6 +5,7 @@ interface JourneyState {
   journeyError: string;
   journeyLoading: boolean;
   currentJourney: Journey;
+  completedJourneys: Journey[];
 }
 
 export const useJourneyStore = defineStore("journey", {
@@ -19,6 +20,7 @@ export const useJourneyStore = defineStore("journey", {
       taskList: [],
       rewardPic: {} as RewardPicture,
     },
+    completedJourneys: [],
   }),
   getters: {
     tasksCompleted: (state) => state.currentJourney.tasksCompleted,
@@ -123,6 +125,26 @@ export const useJourneyStore = defineStore("journey", {
           e.data?.message ??
           "An error happened while trying to mark a task as complete.";
         return { error: this.journeyError };
+      } finally {
+        this.journeyLoading = false;
+      }
+    },
+    async getCompletedJourneys() {
+      this.journeyLoading = true;
+      this.journeyError = "";
+      try {
+        const { data } = await useFetch<{
+          status: string;
+          journeys: Journey[] | null;
+        }>("/api/getCompletedJourneys");
+
+        if (data.value?.journeys) {
+          this.completedJourneys = data.value.journeys;
+        }
+      } catch (e: any) {
+        this.journeyError =
+          e.data?.message ??
+          "An error occurred while fetching your completed journeys.";
       } finally {
         this.journeyLoading = false;
       }
